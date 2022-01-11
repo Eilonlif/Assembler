@@ -6,7 +6,8 @@
 int main() {
     printf("hello\n");
     printf("%d\n", add(2,3));
-    printf("check2\n");
+    printf("check3\n");
+    printf("check3\n");
 
 }
 
