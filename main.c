@@ -5,9 +5,5 @@
 #include "new_file.c"
 int main() {
     printf("hello\n");
-    printf("%d\n", add(2,3));
     printf("%d\n", add(2,-3));
-
-
 }
-
