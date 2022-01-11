@@ -5,7 +5,7 @@
 #include "new_file.c"
 int main() {
     printf("hello\n");
-    printf("small chage\n");
     printf("%d\n", add(2,3));
+    printf("\n");
 }
 
