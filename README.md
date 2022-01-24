@@ -3,4 +3,4 @@ Project for the open university
 by Eilon Lifshitz & Liraz
 
  - [x] git project
- - [ ] preprocessor
+ - [x] Preprocessor
