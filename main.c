@@ -2,5 +2,4 @@
 
 int main() {
     printf("hello\n");
-    printf("Eilon Branch\n");
 }
