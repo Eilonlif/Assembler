@@ -1,2 +1,5 @@
 # mmn14
-project for the open university
+Project for the open university
+by Eilon Lifshitz & Liraz
+
+[ ] preprocessor
