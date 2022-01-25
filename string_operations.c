@@ -71,7 +71,14 @@ void get_second_field(char line[], char field[]) {
     }
     field[field_i] = '\0';
 }
-
+/*
+ * currently not in use
+void get_first_non_whitespace(char *line) {
+    int line_i = 0;
+    while (isspace(line[line_i++]));
+    return line[--line_i]; // TODO (Eilon): Check this, the indexing...
+}
+*/
 
 /**
  * like ltrim but not changing line
