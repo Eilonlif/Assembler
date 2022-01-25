@@ -8,3 +8,19 @@ int main() {
     start_preprocessor(file_name, processed_file_name);
     printf("Ended preprocessor!\n");
 }
+/*
+ *
+ * .DEFAULT_GOAL := magic
+magic_square.o: magic_square.c
+	gcc -c -Wall -ansi -pedantic magic_square.c -o magic_square.o
+magic.o: magic.c
+	gcc -c -Wall -ansi -pedantic magic.c -o magic.o
+magic: magic.o magic_square.o
+	gcc -Wall -pedantic magic.o magic_square.o -o magic
+clean:
+	rm magic magic.o magic_square.o
+
+ *
+ *
+ *
+ * */
