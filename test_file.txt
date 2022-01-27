@@ -1,25 +1,23 @@
-aa
-bb
-cc
-before macro
+
+
+
+
 macro yes
-hello tt
-this is code
+    hello yes a
+    code yes b
 endm
-after macro
-before macro no
+
 macro no
-this is no
-no no no no no
+    hello no
+
+    code no
 endm
-after macro no
-before1
-1
+
+yes
 no
 yes
 no
-after1
-before2
-2
-yes
-after2
+no
+no
+on
+        no no

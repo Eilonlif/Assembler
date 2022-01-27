@@ -35,46 +35,41 @@ char *trim(char *s) {
 }
 
 /**
- * get the first word in the line (ignoring white spaces)
- * @param line - the line
- * @param field - the field (empty at the start of the function)
+ * get a list with the first n words in line
+ * @param line
+ * @param n
+ * @param field_array
  */
-void get_first_field(char line[], char field[]) {
+void get_first_n_fields(char line[], int n, char** field_array) {
+    int i;
     int line_i = 0;
-    int field_i = 0;
-
-    while (isspace(line[line_i++]));
-    line_i--;
-    while (!isspace(line[line_i])) {
-        field[field_i++] = line[line_i++];
+    char tmp_field[MAX_LINE_SIZE];
+    int tmp_field_index = 0;
+    for (i = 0; i < n; i++) {
+        field_array[i] = NULL;
     }
-    field[field_i] = '\0';
-}
-
-/**
- * get the second word in the line (ignoring white spaces)
- * @param line - the line
- * @param field - the field (empty at the start of the function)
- */
-void get_second_field(char line[], char field[]) {
-    int line_i = 0;
-    int field_i = 0;
-
-    while (isspace(line[line_i++]));
-    line_i--;
-    while (!isspace(line[line_i++]));
-    line_i--;
-    while (isspace(line[line_i++]));
-    line_i--;
-    while (!isspace(line[line_i])) {
-        field[field_i++] = line[line_i++];
+    for (i = 0; i < n; i++, tmp_field_index = 0) {
+        while (isspace(line[line_i]) && line[line_i] != '\0' ) {
+            if (line[line_i] == '\n') {
+                return;
+            }
+            line_i++;
+        }
+        if (line_i >= strlen(line)) {
+            return;
+        }
+        while (!isspace(line[line_i]) && line[line_i] != '\0' && line[line_i] != '\n') {
+            tmp_field[tmp_field_index++] = line[line_i++];
+        }
+        tmp_field[tmp_field_index++] = '\0';
+        field_array[i] = (char *) malloc(tmp_field_index * sizeof(char));
+        strncpy(field_array[i], tmp_field, tmp_field_index);
     }
-    field[field_i] = '\0';
 }
-
 
 /**
  * like ltrim but not changing line
+ * filling empty spaces with null
  * @param line
  * @param tmp_line
  */

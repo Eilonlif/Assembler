@@ -5,6 +5,11 @@
 #include <string.h>
 #include <ctype.h>
 
+#define MACRO_START "macro"
+#define MACRO_END "endm"
+
+enum MACRO_SEARCH{MACRO_NOT_FOUND = -1};
+
 typedef struct macro {
     char name[MAX_LINE_SIZE];
     char* code;
