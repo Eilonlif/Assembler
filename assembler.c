@@ -47,6 +47,7 @@ int identify_line(char *line) {
         }
     }
     /* IDK if that's correct... */
+    // TODO (Eilon): NO, its not correct because its possible there's a symbol!
     return COMMAND_LINE;
 }
 

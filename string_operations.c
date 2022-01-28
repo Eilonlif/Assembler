@@ -77,10 +77,25 @@ void get_first_n_fields(char line[], int n, char** field_array) {
 void clear_white_space(char line[], char tmp_line[]) {
     int tmp_line_index = 0;
     int line_index = 0;
-    while (isspace(line[line_index++]));
+    while (isspace(line[line_index]) || line[line_index++] == '\n');
     line_index--;
     while (line[line_index] != '\0') {
         tmp_line[tmp_line_index++] = line[line_index++];
     }
     tmp_line[tmp_line_index] = '\0';
+}
+
+int is_whole_number(char tmp_line[]) {
+    char line[MAX_LINE_SIZE];
+    strcpy(line, trim(tmp_line));
+    int line_i = 0;
+    if (line[0] == '+' || line[0] == '-'){
+        line_i++;
+    }
+    for (;line_i < strlen(line); line_i++) {
+        if (isdigit(line[line_i]) != 1) {
+            return 0;
+        }
+    }
+    return 1;
 }
