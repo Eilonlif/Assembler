@@ -48,6 +48,7 @@ void get_first_n_fields(char line[], int n, char** field_array) {
     for (i = 0; i < n; i++) {
         field_array[i] = NULL;
     }
+
     for (i = 0; i < n; i++, tmp_field_index = 0) {
         while (isspace(line[line_i]) && line[line_i] != '\0' ) {
             if (line[line_i] == '\n') {

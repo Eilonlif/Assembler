@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-
 #define MACRO_START "macro"
 #define MACRO_END "endm"
 

@@ -83,7 +83,7 @@ int start_preprocessor(char *file_name, char *processed_file_name) {
     }
     fclose(fp);
     fclose(new_fp);
-    /* maybe add enum for 'EXIT_CODE' ? */
+    /* maybe add enum for EXIT_CODE ? */
     return 0;
 }
 // TODO (Eilon): add free function for macro table and other stuff
