@@ -1,9 +1,10 @@
-//
-// Created by Eilon Lifshitz on 1/11/22.
-//
 #include "stdio.h"
-#include "new_file.c"
+#include "preprocessor.h"
+
 int main() {
-    printf("hello\n");
-    printf("%d\n", add(2,-3));
+    printf("Started preprocessor!\n");
+    char *file_name = "test_file.txt";
+    char *processed_file_name = "processed_test_file.txt";
+    start_preprocessor(file_name, processed_file_name);
+    printf("Ended preprocessor!\n");
 }

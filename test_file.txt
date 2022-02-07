@@ -1,0 +1,23 @@
+
+
+
+
+macro yes
+    hello yes a
+    code yes b
+endm
+
+macro no
+    hello no
+
+    code no
+endm
+
+yes
+no
+yes
+no
+no
+no
+on
+        no no
