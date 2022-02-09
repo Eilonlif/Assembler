@@ -87,8 +87,10 @@ void clear_white_space(char line[], char tmp_line[]) {
 
 int is_whole_number(char tmp_line[]) {
     char line[MAX_LINE_SIZE];
+    int line_i;
     strcpy(line, trim(tmp_line));
-    int line_i = 0;
+
+    line_i = 0;
     if (line[0] == '+' || line[0] == '-'){
         line_i++;
     }
@@ -99,3 +101,16 @@ int is_whole_number(char tmp_line[]) {
     }
     return 1;
 }
+
+/* TODO (Eilon): IDK if needed for symbol identification
+//char* delete_all_spaces(char *line, char* t_line) {
+//    int line_i;
+//    int t_line_i;
+//    for (line_i = 0, t_line_i = 0; line_i < strlen(line); line_i++) {
+//        if (isspace(line[line_i]) == 0) {
+//            t_line[t_line_i++] = line[line_i];
+//        }
+//    }
+//    return t_line;
+//}
+*/
