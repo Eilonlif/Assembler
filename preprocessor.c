@@ -26,10 +26,10 @@ char *read_macro(FILE *fp) {
     char t_line[MAX_LINE_SIZE];
     char line[MAX_LINE_SIZE];
     char *macro_code = (char *) malloc((MAX_LINE_SIZE + 1) * sizeof(char));
+    int line_counter = 1;
     if (macro_code == NULL) {
         return NULL;
     }
-    int line_counter = 1;
     while (fgets(line, MAX_LINE_SIZE, fp)) {
         strcpy(t_line, trim(line));
         if (strcmp(t_line, MACRO_END) == 0) {
@@ -42,7 +42,7 @@ char *read_macro(FILE *fp) {
         strcat(macro_code, t_line);
         macro_code = realloc(macro_code, ((MAX_LINE_SIZE + 1)*(line_counter++)) * sizeof(char));
     }
-    // TODO (Eilon): maybe add error for 'no endm found'
+    /* TODO (Eilon): maybe add error for 'no endm found' */
     return macro_code;
 }
 
@@ -64,7 +64,7 @@ int start_preprocessor(char *file_name, char *processed_file_name) {
     while (fgets(line, MAX_LINE_SIZE, fp)) {
         /* gets first field in line to check if in macro table or is "macro" */
         get_first_n_fields(line, n_fields, fields);
-//        TODO (Eilon): Read about strtok
+        /* TODO (Eilon): Read about strtok */
         /* checking if line is not empty */
         if (fields[0] != NULL) {
             if (strcmp(fields[0], MACRO_START) == 0) {
@@ -86,5 +86,4 @@ int start_preprocessor(char *file_name, char *processed_file_name) {
     /* maybe add enum for EXIT_CODE ? */
     return 0;
 }
-// TODO (Eilon): add free function for macro table and other stuff
-
+/* TODO (Eilon): add free function for macro table and other stuff */
