@@ -1,4 +1,4 @@
-# Assembly Interpreter
+# Assembler
 # Final project of the course: "System-Programming Lab"
 # by Eilon Lifshitz & Liraz
 In The Open Univesity
