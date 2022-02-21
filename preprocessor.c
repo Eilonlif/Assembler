@@ -6,10 +6,8 @@
  * @param field
  * @return index of macro in search table, MACRO_NOT_FOUND if not in table
  */
+ /* TODO (Eilon): change to 'macro *macro_table' after you changed it to be malloced... */
 int check_in_macro_table(macro macro_table[MAX_FILE_SIZE], int macro_table_size, char field[]) {
-#ifdef DEBUG
-    printf("in check_in_macro_table, table size: %d, field: %s\n", macro_table_size, field);
-#endif
     int i;
     for (i = 0; i < macro_table_size; i++) {
         if (strcmp(field, macro_table[i].name) == 0) {
@@ -20,9 +18,6 @@ int check_in_macro_table(macro macro_table[MAX_FILE_SIZE], int macro_table_size,
 }
 
 char *read_macro(FILE *fp) {
-#ifdef DEBUG
-    printf("In read_macro\n");
-#endif
     char t_line[MAX_LINE_SIZE];
     char line[MAX_LINE_SIZE];
     char *macro_code = (char *) malloc((MAX_LINE_SIZE + 1) * sizeof(char));
@@ -47,14 +42,14 @@ char *read_macro(FILE *fp) {
 }
 
 int start_preprocessor(char *file_name, char *processed_file_name) {
-#ifdef DEBUG
-    printf("Started preprocessor\n");
-#endif
+    /* TODO (Eilon): add check for line to long! */
+    /* TODO (Eilon): and add errors... */
     char line[MAX_LINE_SIZE];
     /* for finding macros */
     int n_fields = 2;
     char* fields[n_fields];
     /* macro table */
+    /* TODO (Eilon) change to malloc to save space... */
     macro macro_table[MAX_FILE_SIZE];
     int macro_table_index = 0;
     int index_in_macro_table;
@@ -84,6 +79,6 @@ int start_preprocessor(char *file_name, char *processed_file_name) {
     fclose(fp);
     fclose(new_fp);
     /* maybe add enum for EXIT_CODE ? */
-    return 0;
+    return NO_ERROR;
 }
 /* TODO (Eilon): add free function for macro table and other stuff */

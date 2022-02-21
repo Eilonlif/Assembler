@@ -96,21 +96,30 @@ int is_whole_number(char tmp_line[]) {
     }
     for (;line_i < strlen(line); line_i++) {
         if (isdigit(line[line_i]) != 1) {
-            return 0;
+            return FALSE;
         }
     }
-    return 1;
+    return TRUE;
 }
 
-/* TODO (Eilon): IDK if needed for symbol identification
-//char* delete_all_spaces(char *line, char* t_line) {
-//    int line_i;
-//    int t_line_i;
-//    for (line_i = 0, t_line_i = 0; line_i < strlen(line); line_i++) {
-//        if (isspace(line[line_i]) == 0) {
-//            t_line[t_line_i++] = line[line_i];
-//        }
-//    }
-//    return t_line;
-//}
-*/
+char* delete_first_n_chars(char* line, int n) {
+    /* not using delete_first_n_chars but fix it anyway... */
+    /*        TODO: Memory leak! */
+    /*    strcpy(line, delete_first_n_chars(fields[0], 1)); */
+    int line_length = strlen(line);
+    int tmp_index = 0;
+    char* tmp = (char *) malloc(line_length * sizeof(char));
+    int i;
+
+    /* TODO (Eilon): check indexing... */
+    /* Edge case */
+    if (n > line_length) {
+        return "";
+    }
+    for (i = n; i < line_length; i ++) {
+        tmp[tmp_index++] = line[i];
+    }
+    return tmp;
+}
+
+/* TODO (Eilon): add function check valid string (with "" and shit) */
