@@ -49,7 +49,7 @@ short check_in_operand_table(char **operand_names_table, char *operand);
 
 int identify_addressing_modes(char* line);
 
-short insert_to_symbol_table(symbol *symbol_table, int *symbol_table_size, char symbol_name[MAX_LINE_SIZE], int value,int base_address,int offset,short attributes[4]);
+short insert_to_symbol_table(symbol *symbol_table, int *symbol_table_size, char symbol_name[MAX_LINE_SIZE], int value,int base_address, int offset, short attributes[4]);
 
 void assembler_pass_1(char *file_name);
 

@@ -5,3 +5,13 @@ void debug(char *debug_msg) {
     printf("%s", debug_msg);
 #endif
 }
+
+
+/* TODO (Eilon): add function for input from terminal handling, for the files and such... */
+
+
+
+
+
+
+

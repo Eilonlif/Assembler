@@ -9,6 +9,11 @@
 #include "error.h"
 #include "utils.h"
 
+
+#define QUOTES_IDENTIFIER '"'
+#define COMMA_IDENTIFIER ','
+
+
 char *ltrim(char *s);
 
 char *rtrim(char *s);

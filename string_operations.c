@@ -122,4 +122,35 @@ char* delete_first_n_chars(char* line, int n) {
     return tmp;
 }
 
-/* TODO (Eilon): add function check valid string (with "" and shit) */
+short check_valid_quotes(char line[]) {
+    int i;
+    int quotes_flag = 0;
+    for (i = 0; i < MAX_LINE_SIZE; i++) {
+        if (line[i] == QUOTES_IDENTIFIER) {
+            quotes_flag++;
+        }
+    }
+    return quotes_flag == 0 || quotes_flag == 2;
+}
+
+/* TODO (Eilon): add function for checking valid ',' */
+
+/* label: op a,b, c, d */
+/* TODO (Eilon & Liraz): do that @ friday / saturday */
+short check_valid_commas(char line[]) {
+    int i;
+    int comma_flag = FALSE;
+    int last_space_index = 0;
+    int values[10]; /* TODO (Eilon): IDK what's the size... */
+    if ()
+    for (i = 0; i < MAX_LINE_SIZE; i++) {
+        if (isspace(line[i])) {
+            last_space_index = i;
+        }
+        if (line[i] == COMMA_IDENTIFIER) {
+            comma_flag = TRUE;
+
+        }
+    }
+}
+

@@ -1,15 +1,19 @@
 #include "assembler.h"
+#include "utils.h"
+
 char* instructions[] = {".data", ".string", ".entry", ".extern"};
 
 int has_label(char *line) {
+    /* TODO (Liraz): change function implementation to return the name of the symbol and NULL otherwise */
+    /* TODO (Liraz): change any future use of the function... */
     int n_fields = 1;
     char* fields[n_fields];
     get_first_n_fields(line, n_fields, fields);
-/* TODO: free fields[0] */
+    /* TODO: free fields[0] */
     return fields[0][strlen(fields[0]) - 1] == END_OF_LABEL_IDENTIFIER;
 }
 
-/* TODO (Eilon): add check for label not a saved operand! */
+/* TODO (Eilon): add checkv for opcode not a saed operand! */
 
 int check_valid_label(char* line) {
     int i;
@@ -46,7 +50,6 @@ short get_instruction_type(char *line) {
             }
         }
     }
-    /* TODO (Eilon): add error here, unidentified instruction! */
     return UNDEFINED_INSTRUCTION;
 }
 
@@ -60,11 +63,11 @@ int identify_line(char *line) {
     if (strlen(trim(tmp)) == 0) {
         return EMPTY_LINE;
     }
-    if (line[0] == COMMENT_IDENTIFIER) {
+    if (fields[0][0] == COMMENT_IDENTIFIER) {
         return COMMENT;
     }
 
-    // TODO (Eilon): logic kinda sus not gonna lie...
+    /* TODO (Eilon): logic kinda sus not gonna lie... */
     if (has_label(line)) {
        if (fields[1][0] == INSTRUCTION_IDENTIFIER) {
            return get_instruction_type(line);
@@ -125,12 +128,11 @@ short check_in_operand_table(char **operand_names_table, char *operand) {
     return FALSE;
 }
 
-
 int identify_addressing_modes(char* line) {
 
 }
 
-short insert_to_symbol_table(symbol *symbol_table, int *symbol_table_size, char symbol_name[MAX_LINE_SIZE], int value,int base_address,int offset,short attributes[4]) {
+short insert_to_symbol_table(symbol *symbol_table, int *symbol_table_size, char symbol_name[MAX_LINE_SIZE], int value, int base_address, int offset, short attributes[4]) {
     if (check_in_symbol_table(symbol_table, *symbol_table_size, symbol_name)) {
         return SYMBOL_ALREADY_IN_SYMBOL_TABLE;
     }
@@ -145,6 +147,7 @@ short insert_to_symbol_table(symbol *symbol_table, int *symbol_table_size, char 
     return NO_ERROR;
 }
 
+/* TODO (Liraz): make new files for each assembler pass */
 void assembler_pass_1(char *file_name) {
     char line[MAX_LINE_SIZE];
     FILE *fp = fopen(file_name, "r");
@@ -173,10 +176,13 @@ void assembler_pass_1(char *file_name) {
         if (line_identification == UNDEFINED_INSTRUCTION) {
             error_handler(UNDEFINED_INSTRUCTION)
         }
+        /* TODO (Eilon): add else?? */
         get_first_n_fields(line, n_fields, fields); /* getting first n fields */
         if (line_identification == DATA_INSTRUCTION || line_identification == STRING_INSTRUCTION) {
             if (symbol_def_flag) {
-                error_handler(insert_to_symbol_table(symbol_table, &symbol_table_size, fields[1],/* value */ ,/* base */, /* offset */, DATA_ATTRIBUTE), line_number);
+                /* TODO (Liraz): Understand the use of inserting to the symbol table*/
+                /* TODO (Eilon): divide into 2 lines...*/
+                error_handler(insert_to_symbol_table(symbol_table, &symbol_table_size, fields[1], /* value */ ,/* base */, /* offset */, DATA_ATTRIBUTE), line_number);
                 /* TODO (Eilon): Still need to do step 7... */
                 /* here go back to step 2... */
             }
@@ -185,16 +191,20 @@ void assembler_pass_1(char *file_name) {
                 /* here go back to step 2... */
             } else {
                 /* TODO (Eilon): indexing could be wrong... because idk what's with the label*/
+                /* TODO (Eilon): divide into 2 lines...*/
                 error_handler(insert_to_symbol_table(symbol_table, &symbol_table_size, fields[1],/* value */ ,/* base */, /* offset */, EXTERNAL_ATTRIBUTE), line_number);
                 /* here go back to step 2... */
             }
         } else {
+            debug("debug msg");
             if (symbol_def_flag) {
                 if (!check_in_operand_table(operand_names_table, fields[1])) {
                     error_handler(UNDEFINED_OPERAND, line_number);
                 } else if (!check_valid_label(fields[0])) {
+                    /* TODO (Eilon): do you need to add check if in symbol table? */
                     error_handler(INVALID_LABEL, line_number);
                 }
+                /* TODO (Eilon): else?? */
                 error_handler(insert_to_symbol_table(symbol_table, &symbol_table_size, fields[2], /* value */ ,/* base */, /* offset */, CODE_ATTRIBUTE), line_number);
             }
         }
