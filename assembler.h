@@ -11,8 +11,14 @@
 #define COMMENT_IDENTIFIER ';'
 #define INSTRUCTION_IDENTIFIER '.'
 #define END_OF_LABEL_IDENTIFIER ':'
+#define HASHTAG_IDENTIFIER '#'
+#define REGISTER_IDENTIFIER 'r'
+#define REGISTER_OPEN_IDENTIFIER '['
+#define REGISTER_CLOSE_IDENTIFIER ']'
+
 
 #define MAX_LABEL_SIZE 33
+#define MAX_OPCODE_SIZE 4
 #define OPERAND_NAMES_TABLE_SIZE 16
 
 #define IC 100
@@ -33,6 +39,23 @@ typedef struct symbol {
     short attributes[4];
 } symbol;
 
+/*
+typedef struct values {
+    char* v;
+    values next;
+} values;
+*/
+
+
+typedef struct data_line {
+    char label[MAX_LABEL_SIZE];
+    char opcode[MAX_OPCODE_SIZE];
+    /* TODO: MAGIC NUMBER... */
+    char values[3][MAX_LINE_SIZE];
+} data_line;
+
+
+
 int has_label(char *line);
 
 int check_valid_label(char* line);
@@ -51,7 +74,38 @@ int identify_addressing_modes(char* line);
 
 short insert_to_symbol_table(symbol *symbol_table, int *symbol_table_size, char symbol_name[MAX_LINE_SIZE], int value,int base_address, int offset, short attributes[4]);
 
-void assembler_pass_1(char *file_name);
+int check_for_spaces(char* value);
+
+int check_hashtag(char* line);
+
+int check_register(char* line);
+
+int check_register_brackets(char* line);
+
+int check_label_with_register(char* line);
+
+int split_by_comma(char* line, char** values, int label_flag);
+
+int get_values(char *line, char** values);
+
+int identify_addressing_modes(char *line);
+
+
+
+
+
+
+
+
+
+
+
+
+    void assembler_pass_1(char *file_name);
+
+
+
+
 
 #endif
 
