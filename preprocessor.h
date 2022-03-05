@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+
 #include "settings.h"
 #include "string_operations.h"
 #include "utils.h"
@@ -11,6 +12,7 @@
 #define MACRO_START "macro"
 #define MACRO_END "endm"
 
+/* TODO (Eilon): What the f*** is this??? */
 enum MACRO_SEARCH{MACRO_NOT_FOUND = -1};
 
 typedef struct macro {

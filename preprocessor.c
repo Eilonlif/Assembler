@@ -1,5 +1,7 @@
 #include "preprocessor.h"
 
+/* TODO (Eilon & Liraz): Also separate the preprocessor algorithm implementation to a different file?? */
+
 /**
  * @param macro_table
  * @param macro_table_size

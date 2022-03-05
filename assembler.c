@@ -3,32 +3,41 @@
 
 char* instructions[] = {".data", ".string", ".entry", ".extern"};
 
-int has_label(char *line) {
-    /* TODO (Liraz): change function implementation to return the name of the symbol and NULL otherwise */
-    /* TODO (Liraz): change any future use of the function... */
-    int n_fields = 1;
-    char* fields[n_fields];
-    get_first_n_fields(line, n_fields, fields);
-    /* TODO: free fields[0] */
-    return fields[0][strlen(fields[0]) - 1] == END_OF_LABEL_IDENTIFIER;
-}
+/* TODO (Eilon): add check for opcode not a saed operand! */
 
-/* TODO (Eilon): add checkv for opcode not a saed operand! */
-
-int check_valid_label(char* line) {
+int check_valid_label_name(char* line) {
     int i;
     char c;
-    if (strlen(line) > MAX_LABEL_SIZE) {
-        return FALSE;
-    }
     for (i = 0; i < strlen(line) - 1; i++) {
         c = line[i];
         if (!(('0' <= c && c <= '9') || ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z'))) {
             return FALSE;
         }
     }
-    return line[strlen(line) - 1] == END_OF_LABEL_IDENTIFIER;
+    return TRUE;
 }
+
+int check_valid_label(char* line) {
+    if (strlen(line) > MAX_LABEL_SIZE) {
+        return FALSE;
+    }
+    return check_valid_label_name(tmp) && (line[strlen(line) - 1] == END_OF_LABEL_IDENTIFIER);
+}
+
+char* has_label(char *line) {
+    /* TODO (Liraz): change any future use of the function... */
+    int n_fields = 1;
+    char* fields[n_fields];
+    get_first_n_fields(line, n_fields, fields);
+    /* TODO: free fields[0] */
+    if (check_valid_label(fields[0])) {
+        /* TODO (Eilon & Liraz): check that... */
+        fields[0][strlen(fields[0]) - 1] = '\0';
+        return fields[0];
+    }
+    return NULL;
+}
+
 
 short get_instruction_type(char *line) {
     int i;
@@ -57,6 +66,7 @@ int identify_line(char *line) {
     char *tmp;
     int n_fields = 2;
     char* fields[n_fields];
+    char label[MAX_LABEL_SIZE];
     get_first_n_fields(line, n_fields, fields);
     tmp = (char*) malloc((strlen(line) + 1) * sizeof(char));
     strcpy(tmp, line);
@@ -68,7 +78,9 @@ int identify_line(char *line) {
     }
 
     /* TODO (Eilon): logic kinda sus not gonna lie... */
-    if (has_label(line)) {
+/*    strcpy(label, *has_label(line)) */
+/* TODO: check the *has_label........ */
+    if (strlen(*has_label(line)) != 0) {
        if (fields[1][0] == INSTRUCTION_IDENTIFIER) {
            return get_instruction_type(line);
        }
@@ -79,7 +91,6 @@ int identify_line(char *line) {
     }
     return COMMAND_LINE;
 }
-
 
 
 void create_operand_table(int tmp_table[16][6]) {
@@ -108,6 +119,7 @@ void create_operand_table(int tmp_table[16][6]) {
     }
 }
 
+
 short check_in_symbol_table(symbol *symbol_table, int symbol_table_size, char *symbol_name) {
     int i;
     for (i = 0; i < symbol_table_size; i++) {
@@ -117,6 +129,7 @@ short check_in_symbol_table(symbol *symbol_table, int symbol_table_size, char *s
     }
     return FALSE;
 }
+
 
 short check_in_operand_table(char **operand_names_table, char *operand) {
     int i;
@@ -128,9 +141,6 @@ short check_in_operand_table(char **operand_names_table, char *operand) {
     return FALSE;
 }
 
-int identify_addressing_modes(char* line) {
-
-}
 
 short insert_to_symbol_table(symbol *symbol_table, int *symbol_table_size, char symbol_name[MAX_LINE_SIZE], int value, int base_address, int offset, short attributes[4]) {
     if (check_in_symbol_table(symbol_table, *symbol_table_size, symbol_name)) {
@@ -146,6 +156,109 @@ short insert_to_symbol_table(symbol *symbol_table, int *symbol_table_size, char 
     symbol_table = (symbol*) realloc((++(*symbol_table_size)) * sizeof(symbol));
     return NO_ERROR;
 }
+
+/* TODO: remember to use this function in the right spots, we didnt do that in the meeting*/
+/* TODO: REMEMBER, value has to be trimmed */
+int check_for_spaces(char* value) {
+    /* beware */
+    int i;
+    for (i = 0; i < strlen(value); i++) {
+        if (isspace(value[i])) {
+            return FALSE;
+        }
+    }
+    return TRUE;
+}
+
+
+/* TODO: REMEMBER, line has to be trimmed */
+int check_hashtag(char* line) {
+    /* beware */
+    if (line[0] == HASHTAG_IDENTIFIER) {
+        /* TODO: check that, fishy... */
+        return is_whole_number(line + 1);
+    }
+    return FALSE;
+}
+
+
+/* TODO: REMEMBER, line has to be trimmed */
+int check_register(char* line) {
+    int num;
+    if (line[0] == REGISTER_IDENTIFIER) {
+        /* r16 */
+        /* r15 */
+        if(is_whole_number(line + 1)) {
+            num = atoi(tmp + 1);
+        } else {
+            return FALSE;
+        }
+        return 0 <= num && num <= 15;
+    }
+    return FALSE;
+}
+
+
+/* TODO: REMEMBER, line has to be trimmed */
+int check_register_brackets(char* line) {
+    if (line[0] == REGISTER_OPEN_IDENTIFIER && line[strlen(line) - 1] == REGISTER_CLOSE_IDENTIFIER) {
+        return check_register(line);
+    }
+    return FALSE;
+}
+
+
+/* TODO: REMEMBER, line has to be trimmed */
+int check_label_with_register(char* line) {
+    char *token;
+    const char s[1] = REGISTER_OPEN_IDENTIFIER + '\0';
+    token = strtok(line, s);
+    /* i.e: not a case of label[r_n] */
+    if (strlen(token) == strlen(line)) {
+        return FALSE;
+    }
+    return check_valid_label_name(token) && check_register_brackets(line + strlen(token) - 1)) {
+}
+
+
+/* TODO: REMEMBER, line has to be trimmed */
+int split_by_comma(char* line, char** values, int label_flag) {
+    int values_index = 0;
+    /* beware */
+    char values** = malloc(MAX_LINE_SIZE * sizeof(char));
+    char *token;
+    const char s[1] = COMMA_IDENTIFIER + '\0';
+
+    /* this is for leaving an empty slot if there's no label */
+    /* TODO: check that */
+    values_index += 1 - label_flag;
+
+    token = strtok(str, s);
+    while(token != NULL) {
+        values = realloc((values_index + 1) * malloc(MAX_LINE_SIZE * sizeof(char)));
+        strcpy(values[values_index], token);
+    }
+    return NO_ERROR;
+}
+
+
+/* I changed this function */
+/* TODO: REMEMBER!! *line has to start after the opcode, otherwise all of the functions would NOT work*/
+int get_values(char *line, char** values) {
+    char label[MAX_LABEL_SIZE];
+    /* TODO: check that */
+    strcpy(label, *has_label(line))
+
+    /* TRUE: yes label, FALSE: no label*/
+    split_by_comma(line, values, strlen(label) != 0);
+    return NO_ERROR;
+}
+
+
+int identify_addressing_modes(char *line) {
+
+}
+
 
 /* TODO (Liraz): make new files for each assembler pass */
 void assembler_pass_1(char *file_name) {
@@ -169,7 +282,8 @@ void assembler_pass_1(char *file_name) {
     symbol_def_flag = FALSE;
     while (fgets(line, MAX_LINE_SIZE, fp)) {
         /* step 1 if has label */
-        if (has_label(line)) {
+        /* TODO: here */
+//        if (has_label(line)) {
             symbol_def_flag = TRUE;
         }
         line_identification = identify_line(line);  /* line identification */
@@ -196,7 +310,6 @@ void assembler_pass_1(char *file_name) {
                 /* here go back to step 2... */
             }
         } else {
-            debug("debug msg");
             if (symbol_def_flag) {
                 if (!check_in_operand_table(operand_names_table, fields[1])) {
                     error_handler(UNDEFINED_OPERAND, line_number);

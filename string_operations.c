@@ -137,11 +137,12 @@ short check_valid_quotes(char line[]) {
 
 /* label: op a,b, c, d */
 /* TODO (Eilon & Liraz): do that @ friday / saturday */
+/*
 short check_valid_commas(char line[]) {
     int i;
     int comma_flag = FALSE;
     int last_space_index = 0;
-    int values[10]; /* TODO (Eilon): IDK what's the size... */
+    int values[10];  TODO (Eilon): IDK what's the size...
     if ()
     for (i = 0; i < MAX_LINE_SIZE; i++) {
         if (isspace(line[i])) {
@@ -153,4 +154,4 @@ short check_valid_commas(char line[]) {
         }
     }
 }
-
+*/
