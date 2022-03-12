@@ -37,7 +37,7 @@ char *read_macro(FILE *fp) {
             strcat(t_line, "\n");
         }
         strcat(macro_code, t_line);
-        macro_code = realloc(macro_code, ((MAX_LINE_SIZE + 1)*(line_counter++)) * sizeof(char));
+        macro_code = realloc(macro_code, ((MAX_LINE_SIZE + 1) * (line_counter++)) * sizeof(char));
     }
     /* TODO (Eilon): maybe add error for 'no endm found' */
     return macro_code;
@@ -55,8 +55,8 @@ int start_preprocessor(char *file_name, char *processed_file_name) {
     macro macro_table[MAX_FILE_SIZE];
     int macro_table_index = 0;
     int index_in_macro_table;
-    FILE *fp = fopen(file_name, "r");
-    FILE *new_fp = fopen(processed_file_name, "w");
+    FILE *fp = fopen(file_name, FILE_READ_MODE);
+    FILE *new_fp = fopen(processed_file_name, FILE_WRITE_MODE);
     /* reading line by line */
     while (fgets(line, MAX_LINE_SIZE, fp)) {
         /* gets first field in line to check if in macro table or is "macro" */

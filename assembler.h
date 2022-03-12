@@ -39,6 +39,13 @@ typedef struct symbol {
     short attributes[4];
 } symbol;
 
+/* formula: (2^(index+1) * number) */
+typedef struct {
+    unsigned int bit_field : 20;
+
+    table next;
+} table;
+
 /*
 typedef struct values {
     char* v;
