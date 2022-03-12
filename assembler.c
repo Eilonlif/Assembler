@@ -82,6 +82,7 @@ int identify_line(char *line) {
 /* TODO: check the *has_label........ */
     if (strlen(*has_label(line)) != 0) {
        if (fields[1][0] == INSTRUCTION_IDENTIFIER) {
+           /* its not different whether thers a label or not... */
            return get_instruction_type(line);
        }
     }
@@ -96,7 +97,8 @@ int identify_line(char *line) {
 void create_operand_table(int tmp_table[16][6]) {
     int i
     int j;
-    int table[16][6] ={{0, -1, 0, 3, 1, 3},
+    int table[16][6] ={
+                {0, -1, 0, 3, 1, 3},
                 {1, -1, 0, 3, 0, 3},
                 {2, 10, 0, 3, 1, 3},
                 {2, 11, 0 ,3, 1, 3},
@@ -139,6 +141,7 @@ short check_in_operand_table(char **operand_names_table, char *operand) {
         }
     }
     return FALSE;
+
 }
 
 
@@ -186,8 +189,6 @@ int check_hashtag(char* line) {
 int check_register(char* line) {
     int num;
     if (line[0] == REGISTER_IDENTIFIER) {
-        /* r16 */
-        /* r15 */
         if(is_whole_number(line + 1)) {
             num = atoi(tmp + 1);
         } else {
@@ -231,7 +232,7 @@ int split_by_comma(char* line, char** values, int label_flag) {
 
     /* this is for leaving an empty slot if there's no label */
     /* TODO: check that */
-    values_index += 1 - label_flag;
+    values_index = label_flag;
 
     token = strtok(str, s);
     while(token != NULL) {
@@ -250,13 +251,17 @@ int get_values(char *line, char** values) {
     strcpy(label, *has_label(line))
 
     /* TRUE: yes label, FALSE: no label*/
-    split_by_comma(line, values, strlen(label) != 0);
+    split_by_comma(line, values, strlen(label) == 0);
     return NO_ERROR;
 }
 
 
 int identify_addressing_modes(char *line) {
 
+}
+
+void insert_value_by_index(table t) {
+    /* (2^(index+1) * number) */
 }
 
 

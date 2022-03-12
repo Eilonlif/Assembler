@@ -133,6 +133,17 @@ short check_valid_quotes(char line[]) {
     return quotes_flag == 0 || quotes_flag == 2;
 }
 
+short check_no_dot(char line[]) {
+    int i;
+    for (i = 0; i < MAX_LINE_SIZE; i++) {
+        if (line[i] == DOT_IDENTIFIER) {
+            return FALSE;
+        }
+    }
+    return TRUE;
+}
+
+
 /* TODO (Eilon): add function for checking valid ',' */
 
 /* label: op a,b, c, d */
