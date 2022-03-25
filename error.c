@@ -15,7 +15,7 @@ void error_handler(int return_code, int line_number) {
         case LINE_SIZE_LONGER_THAN_MAX:
             print_error("something.... ");
             break;
-        case :
+            /*TODO: add shit bruhthuer*/
     }
 }
 

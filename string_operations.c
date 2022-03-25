@@ -144,6 +144,33 @@ short check_no_dot(char line[]) {
 }
 
 
+char* clean_spaces(char* line) {
+    int i;
+    char* tmp_line;
+    tmp_line = (char*)malloc(MAX_LINE_SIZE * sizeof(char));
+    int tmp_line_index = 0;
+
+    for (i = 0; i < strlen(line); i++) {
+        if (line[i] == '\t') {
+            line[i] = ' ';
+        }
+    }
+    for (i = 0; i < strlen(line) - 1; i++) {
+        if (line[i] == ' ') {
+            while (line[i + 1] == ' ') {
+                i++;
+            }
+        }
+        tmp_line[tmp_line_index++] = line[i];
+    }
+    return trim(tmp_line);
+}
+
+
+
+
+
+
 /* TODO (Eilon): add function for checking valid ',' */
 
 /* label: op a,b, c, d */
