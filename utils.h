@@ -7,6 +7,7 @@
 
 void debug(char *debug_msg);
 
+
 /* TODO (Eilon & Liraz): remember to delete this before submitting AND REMOVE ANY TIME IN THE PROJECT ITSELF!! */
 /* change the name or something for not debugging */
 #define DEBUG
