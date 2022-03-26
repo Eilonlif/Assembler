@@ -1,6 +1,7 @@
 #include "assembler.h"
 #include "utils.h"
 #include <errno.h>
+#include <stdio.h>
 
 char *instructions[] = {".data", ".string", ".entry", ".extern"};
 
@@ -323,6 +324,7 @@ int split_by_comma(char *line, char **values, int label_flag) {
     i = 2;
     token_comma = trim(strtok(NULL, s_comma));
     while (token_comma != NULL) {
+//        printf("trying result not reallocdesdd: %s\n", &result[MAX_LINE_SIZE * (i + 1)]);
         result = realloc(result, (i + 1) * MAX_LINE_SIZE * sizeof(char));
         printf("trimmed token: '%s'\n", trim(token_comma));
         strcpy(&result[MAX_LINE_SIZE * (i)], trim(token_comma));
@@ -332,6 +334,13 @@ int split_by_comma(char *line, char **values, int label_flag) {
         token_comma = strtok(NULL, s_comma);
     }
     *values = result;
+//    int k;
+//
+//    for (k = 0; k < i; k++) {
+//        printf("&result[k * MAX_LINE_SIZE]: %s\n", &result[k * MAX_LINE_SIZE]);
+//        free(&result[k * MAX_LINE_SIZE]);
+//        printf("after free...\n");
+//    }
     free(result);
     return NO_ERROR;
 }
@@ -440,7 +449,7 @@ int calculate_binary_code(char *line, char **operand_names_table, int *table, in
     rows[1] = insert_value_by_index(rows[1], FUNCT_INDEX, funct);
     rows[1] = insert_value_by_index(rows[1], A_INDEX, 1);
 
-    if (values[2 * MAX_LINE_SIZE] != '\0') {
+    if (strlen(&values[2 * MAX_LINE_SIZE] ) > 0) {
         calculate_register_and_addressing_mode(values, 2, &reg_addressing_mode_list);
         rows[1] = insert_value_by_index(rows[1], SOURCE_REGISTER_INDEX, reg_addressing_mode_list[0]);
         rows[1] = insert_value_by_index(rows[1], SOURCE_ADDRESSING_MODE_INDEX, reg_addressing_mode_list[1]);
@@ -455,7 +464,7 @@ int calculate_binary_code(char *line, char **operand_names_table, int *table, in
             rows_index += 2;
         }
     }
-    if (values[3 * MAX_LINE_SIZE] != '\0') {
+    if (strlen(&values[3 * MAX_LINE_SIZE] ) > 0) {
         calculate_register_and_addressing_mode(values, 3, &reg_addressing_mode_list);
         rows[1] = insert_value_by_index(rows[1], TARGET_REGISTER_INDEX, reg_addressing_mode_list[0]);
         rows[1] = insert_value_by_index(rows[1], TARGET_ADDRESSING_MODE_INDEX, reg_addressing_mode_list[1]);
@@ -472,6 +481,7 @@ int calculate_binary_code(char *line, char **operand_names_table, int *table, in
     }
 
     insert_rows_to_table(rows, rows_index, table, table_index);
+//    free(&values);
     return rows_index;
 }
 
@@ -517,6 +527,28 @@ void get_externs_and_entries(char *file_name, char **externs, char **entries) {
     fclose(fp);
 }
 
+
+void object_output_extern (char *file_name, symbol *symbol_table, int symbol_table_size, char *symbol_name, int line_index) {
+    int i;
+    int j;
+
+    char str[80];
+
+    FILE *fp = fopen(file_name, "w");
+
+/*strcpy(ext_file, file_name);
+strcat(ext_file, .ent);*/
+    for (i = 0; i < symbol_table_size; i++){
+        for (j = 0; j < symbol_table->attributes_size; j++){
+            if (symbol_table->attributes[i] == EXTERNAL_ATTRIBUTE){
+                sprintf(str, "%s %d %d\n",symbol_table->symbol_name, line_index, line_index + 1);
+                fputs(str, fp);
+            }
+        }
+    }
+}
+
+
 void check_label_or_label_register(char *parm, int **table, symbol *symbol_table, int symbol_table_size, int line_index,
                                    int *table_index_prefixes[MAX_TABLE_SIZE]) {
     int symbol_index;
@@ -525,6 +557,9 @@ void check_label_or_label_register(char *parm, int **table, symbol *symbol_table
     if ((check_valid_label_name(parm) && symbol_index != -1) || check_label_with_register(parm) != -1) {
         /* maybe line_index-1??? idk bruh lols*/
         /* TODO: check if thats okay like u do return and change rows, susssssssss*/
+
+        /* TODO HERE FUNCTION FOR WRITING THE EXTERNAL FILE*/
+
         index = ((*table_index_prefixes[line_index]) - 100) + 2;
         *table[index] += symbol_table[symbol_index].base_address;
         *table[index] = insert_value_by_index(*table[index], R_INDEX, 1);

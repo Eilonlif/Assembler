@@ -125,5 +125,7 @@ void cpy_int_lists_for_symbol(int* l1, int *l2);
 
 void check_label_or_label_register(char *parm, int** table, symbol* symbol_table, int symbol_table_size, int line_index, int *table_index_prefixes[MAX_TABLE_SIZE]);
 
+void object_output_extern (char *file_name, symbol *symbol_table, int symbol_table_size, char *symbol_name, int line_index);
+
 #endif
 
