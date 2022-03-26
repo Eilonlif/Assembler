@@ -27,29 +27,29 @@ void object_output(char *file_name, int* table, int table_size) {
         printf("%s\n", line);
     }
 }
-
-void object_output_entries (char *file_name, char **entries, symbol *symbol_table, int symbol_table_size, char *symbol_name) {
-
-    int i;
-    int j;
-
-    char str[80];
-
-    FILE *fp = fopen(file_name, "w");
-
-    for (i = 0; i < symbol_table_size; i++){
-
-        for (j = 0; j < symbol_table[i].attributes_size; j++){
-
-            if (symbol_table[i].attributes[i] == ENTRY_ATTRIBUTE){
-                sprint(str,"%s,%d,%d\n",symbol_table->symbol_name,symbol.base_adress,symbol.offset);
-                fputs(str, fp);
-            }
-
-        }
-
-    }
-}
+//
+//void object_output_entries (char *file_name, char **entries, symbol *symbol_table, int symbol_table_size, char *symbol_name) {
+//
+//    int i;
+//    int j;
+//
+//    char str[80];
+//
+//    FILE *fp = fopen(file_name, "w");
+//
+//    for (i = 0; i < symbol_table_size; i++){
+//
+//        for (j = 0; j < symbol_table[i].attributes_size; j++){
+//
+//            if (symbol_table[i].attributes[i] == ENTRY_ATTRIBUTE){
+//                sprint(str,"%s,%d,%d\n",symbol_table->symbol_name,symbol.base_adress,symbol.offset);
+//                fputs(str, fp);
+//            }
+//
+//        }
+//
+//    }
+//}
 
 
 int main() {

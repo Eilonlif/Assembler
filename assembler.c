@@ -527,26 +527,26 @@ void get_externs_and_entries(char *file_name, char **externs, char **entries) {
     fclose(fp);
 }
 
-
-void object_output_extern (char *file_name, symbol *symbol_table, int symbol_table_size, char *symbol_name, int line_index) {
-    int i;
-    int j;
-
-    char str[80];
-
-    FILE *fp = fopen(file_name, "w");
-
-/*strcpy(ext_file, file_name);
-strcat(ext_file, .ent);*/
-    for (i = 0; i < symbol_table_size; i++){
-        for (j = 0; j < symbol_table->attributes_size; j++){
-            if (symbol_table->attributes[i] == EXTERNAL_ATTRIBUTE){
-                sprintf(str, "%s %d %d\n",symbol_table->symbol_name, line_index, line_index + 1);
-                fputs(str, fp);
-            }
-        }
-    }
-}
+//
+//void object_output_extern (char *file_name, symbol *symbol_table, int symbol_table_size, char *symbol_name, int line_index) {
+//    int i;
+//    int j;
+//
+//    char str[80];
+//
+//    FILE *fp = fopen(file_name, "w");
+//
+///*strcpy(ext_file, file_name);
+//strcat(ext_file, .ent);*/
+//    for (i = 0; i < symbol_table_size; i++){
+//        for (j = 0; j < symbol_table->attributes_size; j++){
+//            if (symbol_table->attributes[i] == EXTERNAL_ATTRIBUTE){
+//                sprintf(str, "%s %d %d\n",symbol_table->symbol_name, line_index, line_index + 1);
+//                fputs(str, fp);
+//            }
+//        }
+//    }
+//}
 
 
 void check_label_or_label_register(char *parm, int **table, symbol *symbol_table, int symbol_table_size, int line_index,
