@@ -5,7 +5,7 @@
 
 //#include "settings.h"
 //#include "preprocessor.h"
-#include "assembler.h"
+#include "assembler_passes.h"
 //#include "string_operations.h"
 //#include "error.h"
 

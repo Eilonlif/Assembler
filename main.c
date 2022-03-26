@@ -57,6 +57,6 @@
 //
 
 int main() {
-    assembler_pass_1("../ptf.txt");
+    assembler("../ptf.txt");
     return 0;
 }

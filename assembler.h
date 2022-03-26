@@ -41,10 +41,7 @@
 #define TARGET_ADDRESSING_MODE_INDEX 0
 
 
-int IC;
-int DC;
-
-enum line_and_instruction_types {EMPTY_LINE, COMMENT, INSTRUCTION_LINE, COMMAND_LINE, DATA_INSTRUCTION, STRING_INSTRUCTION, ENTRY_INSTRUCTION, EXTERN_INSTRUCTION};
+enum line_and_instruction_types {EMPTY_LINE, COMMENT, INSTRUCTION_LINE, COMMAND_LINE, DATA_INSTRUCTION,EXTERN_INSTRUCTION, STRING_INSTRUCTION, ENTRY_INSTRUCTION};
 enum addressing_modes {IMMEDIATE, DIRECT, INDEX_ADDRESSING, REGISTER_DIRECT};
 enum symbol_attributes {DATA_ATTRIBUTE, CODE_ATTRIBUTE, ENTRY_ATTRIBUTE, EXTERNAL_ATTRIBUTE};
 
@@ -55,7 +52,6 @@ typedef struct symbol {
     int value;
     int base_address;
     int offset;
-    int attributes_index;
     /* 4 is the theoretical maximum although there can never be 4 I think so just to be safe... */
     int attributes[4];
     int attributes_size;
@@ -95,7 +91,7 @@ int check_in_symbol_table(symbol *symbol_table, int symbol_table_size, char *sym
 
 int check_in_operand_table(char **operand_names_table, char *operand);
 
-int insert_to_symbol_table(symbol *symbol_table, int *symbol_table_size, char symbol_name[MAX_LINE_SIZE], int value, int base_address, int offset, int attributes[4], int attributes_size);
+int insert_to_symbol_table(symbol **symbol_table, int *symbol_table_size, char symbol_name[MAX_LINE_SIZE], int value, int base_address, int offset, int attributes[4], int attributes_size);
 
 int check_for_spaces(char* value);
 
@@ -113,7 +109,7 @@ int get_values(char *line, char**values);
 
 int insert_value_by_index(int row, int num_index, int num);
 
-void calculate_register_and_addressing_mode(char **values, int field_index, int** reg_addrss_mode);
+void calculate_register_and_addressing_mode(char *values, int field_index, int** reg_addrss_mode);
 
 void insert_rows_to_table(int* rows, int rows_index, int* table, int *table_index);
 
@@ -123,11 +119,11 @@ void clear_values(int *arr, int size);
 
 void get_externs_and_entries(char *file_name, char **externs, char **entries);
 
-void clear_symbol_for_symbol_table(symbol s);
+void clear_symbol_for_symbol_table(symbol *s);
 
 void cpy_int_lists_for_symbol(int* l1, int *l2);
 
-void check_label_or_label_register(char *parm, int** table, symbol** symbol_table, int symbol_table_size, int line_index, int *table_index_prefixes[MAX_TABLE_SIZE]);
+void check_label_or_label_register(char *parm, int** table, symbol* symbol_table, int symbol_table_size, int line_index, int *table_index_prefixes[MAX_TABLE_SIZE]);
 
 #endif
 
