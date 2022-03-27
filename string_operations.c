@@ -63,7 +63,7 @@ void get_first_n_fields(char line[], int n, char** field_array) {
             tmp_field[tmp_field_index++] = line[line_i++];
         }
         tmp_field[tmp_field_index++] = '\0';
-        field_array[i] = (char *) malloc(tmp_field_index * sizeof(char));
+        field_array[i] = (char *) calloc(tmp_field_index, sizeof(char));
         strncpy(field_array[i], tmp_field, tmp_field_index);
     }
 }
@@ -108,7 +108,7 @@ char* delete_first_n_chars(char* line, int n) {
     /*    strcpy(line, delete_first_n_chars(fields[0], 1)); */
     int line_length = strlen(line);
     int tmp_index = 0;
-    char* tmp = (char *) malloc(line_length * sizeof(char));
+    char* tmp = (char *) calloc(line_length, sizeof(char));
     int i;
 
     /* TODO (Eilon): check indexing... */
@@ -147,15 +147,15 @@ short check_no_dot(char line[]) {
 char* clean_spaces(char* line) {
     int i;
     char* tmp_line;
-    tmp_line = (char*)malloc(MAX_LINE_SIZE * sizeof(char));
+    tmp_line = (char*)calloc(MAX_LINE_SIZE * 2,sizeof(char));
     int tmp_line_index = 0;
 
-    for (i = 0; i < strlen(line); i++) {
+    for (i = 0; i < strlen(line) && i < MAX_LINE_SIZE; i++) {
         if (line[i] == '\t') {
             line[i] = ' ';
         }
     }
-    for (i = 0; i < strlen(line) - 1; i++) {
+    for (i = 0; i < strlen(line) - 1 && i < MAX_LINE_SIZE ; i++) {
         if (line[i] == ' ') {
             while (line[i + 1] == ' ') {
                 i++;

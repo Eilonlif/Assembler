@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "utils.h"
+
 //#include "settings.h"
 //#include "preprocessor.h"
 #include "assembler_passes.h"
