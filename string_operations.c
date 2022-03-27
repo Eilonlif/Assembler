@@ -1,5 +1,6 @@
 #include "string_operations.h"
 
+
 /**
  * remove white spaces from the left of the current string s 
  * @param s the string that trimed 
@@ -73,10 +74,9 @@ void get_first_n_fields(char line[], int n, char** field_array) {
 
 
 
-/**  --update
- * clear the white spaces from 
- * not changing s 
- * @param line the string that trimed 
+/**
+ * clear all the white spaces from the middle of a string 
+ * @param line the string that need to clear whote spaces  
  * @param tmp_line temp string 
  */
 void clear_white_space(char line[], char tmp_line[]) {
@@ -92,11 +92,10 @@ void clear_white_space(char line[], char tmp_line[]) {
 
 
 
-/** --update
- * replace white spaces from the left of s to NULL
- * not changing s 
- * @param line the string that trimed 
- * @param tmp_line temp string 
+/** 
+ * check if tmp_line is a number 
+ * @param tmp_line the string we want to check if is a number 
+ * @return TRUE if tmp_line is a number, FALSE else  
  */
 int is_whole_number(char tmp_line[]) {
     char line[MAX_LINE_SIZE];
@@ -117,11 +116,11 @@ int is_whole_number(char tmp_line[]) {
 
 
 
-/**  --update
- * replace white spaces from the left of s to NULL
- * not changing s 
- * @param line the string that trimed 
- * @param tmp_line temp string 
+/** 
+ * delete the first n chars in a string 
+ * @param line the string we want to delete the chars 
+ * @param n number of chars we want to delete 
+ * @return tmp 
  */
 char* delete_first_n_chars(char* line, int n) {
     /* not using delete_first_n_chars but fix it anyway... */
@@ -145,11 +144,10 @@ char* delete_first_n_chars(char* line, int n) {
 
 
 
-/**  --update
- * replace white spaces from the left of s to NULL
- * not changing s 
- * @param line the string that trimed 
- * @param tmp_line temp string 
+/**  
+ * check if the quotes is valid 
+ * @param line the string we want to check 
+ * @return TRUE if the quotes is valid, FALSE else 
  */
 short check_valid_quotes(char line[]) {
     int i;
@@ -164,11 +162,10 @@ short check_valid_quotes(char line[]) {
 
 
 
-/**  --update
- * replace white spaces from the left of s to NULL
- * not changing s 
- * @param line the string that trimed 
- * @param tmp_line temp string 
+/** 
+ * check if there is a dot in a string 
+ * @param line the string we want to check 
+ * @return TRUE if there is a dot in string, FALSE else 
  */
 short check_no_dot(char line[]) {
     int i;
@@ -181,12 +178,10 @@ short check_no_dot(char line[]) {
 }
 
 
-
-/**  --update
- * replace white spaces from the left of s to NULL
- * not changing s 
- * @param line the string that trimed 
- * @param tmp_line temp string 
+/**
+ * clear all the spaces from a string 
+ * @param line the string that need to clear whote spaces  
+ * @return the string without duplicate spaces
  */
 char* clean_spaces(char* line) {
     int i;
