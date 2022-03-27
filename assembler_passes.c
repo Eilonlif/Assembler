@@ -130,10 +130,6 @@ void assembler_pass_2(char *file_name, int **table, int *table_index_prefixes[MA
     parm1 = (char *) calloc(MAX_LINE_SIZE, sizeof(char));
     parm2 = (char *) calloc(MAX_LINE_SIZE, sizeof(char));
 
-    for (k = 0; k < 50; k++) {
-        printf("%d:\t%d\n", k, (*table_index_prefixes)[k]);
-    }
-
     while (fgets(line, MAX_LINE_SIZE, fp) != NULL) {
         line_id = identify_line(line);
         if (line_id != COMMENT && line_id != EMPTY_LINE && line_id != EXTERN_INSTRUCTION && line_id != ENTRY_INSTRUCTION) {
@@ -188,7 +184,6 @@ void assembler(char *file_name) {
     table = (int *) malloc(MAX_TABLE_SIZE * sizeof(int));
     table_index_prefixes = (int *) malloc(MAX_TABLE_SIZE * sizeof(int));
     assembler_pass_1(file_name, &table, &table_index_prefixes, &symbol_table, &symbol_table_size);
-    printf("starting pass 2\n");
     assembler_pass_2(file_name, &table, &table_index_prefixes, &symbol_table, &symbol_table_size);
 
     entries_output(file_name, symbol_table, symbol_table_size);

@@ -482,16 +482,13 @@ void calculate_register_and_addressing_mode(char *values, int field_index, int *
     }
     if (check_hashtag(trim(&values[field_index * MAX_LINE_SIZE]))) {
         addressing_mode = IMMEDIATE;
-//    } else if (defined_in_labels || defined_in_extern || check_in_symbol_table(symbol_table, symbol_table_size, trim(&values[field_index * MAX_LINE_SIZE])) != -1) {
     } else if (defined_in_labels || defined_in_extern) {
         addressing_mode = DIRECT;
-        printf("everything is direct??... \n");
     } else if (check_label_register != -1) {
         addressing_mode = INDEX_ADDRESSING;
     } else if (check_register_okay != -1) {
         addressing_mode = REGISTER_DIRECT;
     } else {
-        printf("something is very very wrong... \n");
         addressing_mode = 0;
     }
 
@@ -512,9 +509,6 @@ void calculate_register_and_addressing_mode(char *values, int field_index, int *
 void insert_rows_to_table(int *rows, int rows_index, int *table, int *table_index) {
     int i;
     for (i = 0; i < rows_index; i++) {
-        printf("table index: %d\n", *table_index);
-        int2bin(rows[i]);
-
         table[(*table_index) + i] = rows[i];
     }
     (*table_index) += rows_index;
@@ -538,8 +532,6 @@ void insert_rows_to_table(int *rows, int rows_index, int *table, int *table_inde
 /* TODO: Still need to work out the case for .data and .string */
 int calculate_binary_code(char *line, char **operand_names_table, int *table, int *table_index, symbol *symbol_table,
                           int symbol_table_size, char *externs, int externs_size, char *labels, int labels_size) {
-//    printf("line in calculate_binary_code: %s\n", line);
-
     char *values;
 
     int rows_index;
@@ -555,11 +547,7 @@ int calculate_binary_code(char *line, char **operand_names_table, int *table, in
 
     int values_size;
 
-
-    /* values: {label opcode a1, a2} */
-
     get_values(line, &values, &values_size);
-//    int rows[values_size];
     int rows[20];
     clear_values(rows, MAX_LINES_IN_TABLE);
 
@@ -647,10 +635,7 @@ int calculate_binary_code(char *line, char **operand_names_table, int *table, in
             }
         }
     }
-    printf("line: %s\n", line);
     insert_rows_to_table(rows, rows_index, table, table_index);
-
-    //    free(&values);
     return rows_index;
 }
 
@@ -688,9 +673,6 @@ get_externs_and_entries_and_labels(char *file_name, char **externs, char **entri
     labels_index = 0;
     entries_index = 0;
     externs_index = 0;
-    /* TODO: CHECK... */
-//    const char entry_name[6] = ENTRY_IDENTIFIER;
-//    const char extern_name[7] = EXTERN_IDENTIFIER;
     FILE *fp = fopen(file_name, "r");
     while ((fgets(line, MAX_LINE_SIZE, fp)) != NULL) {
         strcpy(line, clean_spaces(line));
@@ -742,7 +724,7 @@ void output_extern (char *file_name, char *symbol_name, int current_IC) {
 
     strcpy(extern_file_name, file_name);
 
-    extern_file_name[strlen(extern_file_name) - 4] = '\0';
+    extern_file_name[strlen(extern_file_name) - 3] = '\0';
     strcat(extern_file_name, ".ext");
 
     FILE *fp = fopen(extern_file_name, "a+");
@@ -788,9 +770,5 @@ void check_label_or_label_register(char *parm, int **table, symbol *symbol_table
         if (symbol_table[symbol_index].attributes[0] == EXTERNAL_ATTRIBUTE) {
             output_extern(file_name, parm, 100 + index);
         }
-        printf("%s\n", parm);
-        printf("%d\n", index);
-        int2bin((*table)[index]);
-        int2bin((*table)[index + 1]);
     }
 }
