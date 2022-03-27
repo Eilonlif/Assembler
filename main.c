@@ -1,12 +1,10 @@
 #include "main.h"
-
 //
 //void handle_input(char* file_name, int *input_flag) {
 //    if (check_no_dot(file_name)) {
-//        /* TODO: Check this, sus... */
 //        strcat(file_name, AS_FILE_ENDING);
 //    } else {
-//        error_handler(FILE_NAME_WITH_DOT);
+//        error_handler(FILE_NAME_WITH_DOT, 0);
 //        (*input_flag) = FALSE;
 //    }
 //}
@@ -16,11 +14,10 @@
 //    int assembler_pass_1_result;
 //    int assembler_pass_2_result;
 //    /* Removing the '.as'*/
-//    file_name[strlen(file_name) - 4] = '\0'
+//    file_name[strlen(file_name) - 4] = '\0';
 //    strcpy(processed_file_name, file_name);
 //
 //    strcat(processed_file_name, AM_FILE_ENDING);
-//
 //    start_preprocessor(file_name, processed_file_name);
 //    /* TODO: Currently returning void... and i dont remember if it shou,ld continue if an error was found in preprocessor */
 //
@@ -36,7 +33,7 @@
 //         */
 //    }
 //}
-
+//
 //int main(int argc, char* argv[]) {
 //    int i;
 //    int input_flag = TRUE;
@@ -55,7 +52,7 @@
 //
 //    return 0;
 //}
-//
+
 
 int main() {
     assembler("../ptf.txt");

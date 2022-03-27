@@ -15,7 +15,6 @@ int DC;
 int ICF;
 int DCF;
 
-
 #define SPACE_IDENTIFIER ' '
 #define COMMENT_IDENTIFIER ';'
 #define INSTRUCTION_IDENTIFIER '.'
@@ -78,7 +77,6 @@ typedef struct values {
 typedef struct data_line {
     char label[MAX_LABEL_SIZE];
     char opcode[MAX_OPCODE_SIZE];
-    /* TODO: MAGIC NUMBER... */
     char values[3][MAX_LINE_SIZE];
 } data_line;
 
@@ -91,8 +89,6 @@ char* has_label(char *line);
 int get_instruction_type(char *line);
 
 int identify_line(char *line);
-
-void create_operand_table(int tmp_table[16][6]);
 
 int check_in_symbol_table(symbol *symbol_table, int symbol_table_size, char *symbol_name);
 
@@ -126,13 +122,11 @@ void clear_values(int *arr, int size);
 
 void get_externs_and_entries_and_labels(char *file_name, char **externs, char **entries, int *externs_size, char **labels, int *labels_size);
 
-void clear_symbol_for_symbol_table(symbol *s);
-
 void cpy_int_lists_for_symbol(int* l1, int *l2);
 
-void check_label_or_label_register(char *parm, int** table, symbol* symbol_table, int symbol_table_size, int line_index, int *table_index_prefixes[MAX_TABLE_SIZE]);
-
-void object_output_extern (char *file_name, symbol *symbol_table, int symbol_table_size, char *symbol_name, int line_index);
+void check_label_or_label_register(char *parm, int **table, symbol *symbol_table, int symbol_table_size, int line_index,
+                                   int *table_index_prefixes[MAX_TABLE_SIZE], char *file_name);
+void output_extern (char *file_name, char *symbol_name, int current_IC);
 
 #endif
 
