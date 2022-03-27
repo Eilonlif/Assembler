@@ -10,6 +10,12 @@
 #include "error.h"
 #include "utils.h"
 
+int IC;
+int DC;
+int ICF;
+int DCF;
+
+
 #define SPACE_IDENTIFIER ' '
 #define COMMENT_IDENTIFIER ';'
 #define INSTRUCTION_IDENTIFIER '.'
@@ -41,11 +47,12 @@
 #define TARGET_ADDRESSING_MODE_INDEX 0
 
 
-enum line_and_instruction_types {EMPTY_LINE, COMMENT, INSTRUCTION_LINE, COMMAND_LINE, DATA_INSTRUCTION,EXTERN_INSTRUCTION, STRING_INSTRUCTION, ENTRY_INSTRUCTION};
+enum line_and_instruction_types {EMPTY_LINE, COMMENT, INSTRUCTION_LINE, COMMAND_LINE, DATA_INSTRUCTION,EXTERN_INSTRUCTION, STRING_INSTRUCTION, ENTRY_INSTRUCTION, UNDEFINED_INSTRUCTION};
 enum addressing_modes {IMMEDIATE, DIRECT, INDEX_ADDRESSING, REGISTER_DIRECT};
 enum symbol_attributes {DATA_ATTRIBUTE, CODE_ATTRIBUTE, ENTRY_ATTRIBUTE, EXTERNAL_ATTRIBUTE};
 
 extern char* instructions[];
+extern int op_table[16][6];
 
 typedef struct symbol {
     char symbol_name[MAX_LINE_SIZE];
@@ -103,21 +110,21 @@ int check_register_brackets(char* line);
 
 int check_label_with_register(char* line);
 
-int split_by_comma(char* line, char** values, int label_flag);
+int split_by_comma(char *line, char **values, int label_flag, int *values_size);
 
-int get_values(char *line, char**values);
+int get_values(char *line, char **values, int *values_size);
 
 int insert_value_by_index(int row, int num_index, int num);
 
-void calculate_register_and_addressing_mode(char *values, int field_index, int** reg_addrss_mode);
+void calculate_register_and_addressing_mode(char *values, int field_index, int **reg_addrss_mode, symbol *symbol_table, int symbol_table_size, char *externs, int externs_size, char* labels, int labels_size);
 
 void insert_rows_to_table(int* rows, int rows_index, int* table, int *table_index);
 
-int calculate_binary_code(char *line, char **operand_names_table, int* table, int *table_index);
+int calculate_binary_code(char *line, char **operand_names_table, int *table, int *table_index, symbol *symbol_table, int symbol_table_size, char *externs, int externs_size, char* labels, int labels_size);
 
 void clear_values(int *arr, int size);
 
-void get_externs_and_entries(char *file_name, char **externs, char **entries);
+void get_externs_and_entries_and_labels(char *file_name, char **externs, char **entries, int *externs_size, char **labels, int *labels_size);
 
 void clear_symbol_for_symbol_table(symbol *s);
 

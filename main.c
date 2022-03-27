@@ -1,4 +1,5 @@
 #include "main.h"
+
 //
 //void handle_input(char* file_name, int *input_flag) {
 //    if (check_no_dot(file_name)) {
@@ -58,5 +59,6 @@
 
 int main() {
     assembler("../ptf.txt");
+
     return 0;
 }
