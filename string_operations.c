@@ -1,21 +1,21 @@
 #include "string_operations.h"
 
 /**
- * trims white spaces from the left of s
- * be careful: will change s!
- * @param s
- * @return
+ * remove white spaces from the left of the current string s 
+ * @param s the string that trimed 
+ * @return the string s without white spaces from the left
  */
 char *ltrim(char *s) {
     while (isspace(*s)) s++;
     return s;
 }
 
+
+
 /**
- * trims white spaces from the right of s
- * be careful: will change s!
- * @param s
- * @return
+ * remove white spaces from the right of the current string s 
+ * @param s the string that trimed 
+ * @return the string s without white spaces from the right
  */
 char *rtrim(char *s) {
     char *back = s + strlen(s);
@@ -24,21 +24,24 @@ char *rtrim(char *s) {
     return s;
 }
 
+
+
 /**
- * trims white spaces from the right and from the left of s
- * be careful: will change s!
- * @param s
- * @return
+ * remove white spaces from the right and from the left of the current string s 
+ * @param s the string that trimed 
+ * @return the string s without white spaces from the right and from the left
  */
 char *trim(char *s) {
     return rtrim(ltrim(s));
 }
 
+
+
 /**
- * get a list with the first n words in line
- * @param line
- * @param n
- * @param field_array
+ * get a list with the first n words in a line
+ * @param line the line to get the words 
+ * @param n number of words from line 
+ * @param field_array list of the words 
  */
 void get_first_n_fields(char line[], int n, char** field_array) {
     int i;
@@ -68,11 +71,13 @@ void get_first_n_fields(char line[], int n, char** field_array) {
     }
 }
 
-/**
- * like ltrim but not changing line
- * filling empty spaces with null
- * @param line
- * @param tmp_line
+
+
+/**  --update
+ * clear the white spaces from 
+ * not changing s 
+ * @param line the string that trimed 
+ * @param tmp_line temp string 
  */
 void clear_white_space(char line[], char tmp_line[]) {
     int tmp_line_index = 0;
@@ -85,6 +90,14 @@ void clear_white_space(char line[], char tmp_line[]) {
     tmp_line[tmp_line_index] = '\0';
 }
 
+
+
+/** --update
+ * replace white spaces from the left of s to NULL
+ * not changing s 
+ * @param line the string that trimed 
+ * @param tmp_line temp string 
+ */
 int is_whole_number(char tmp_line[]) {
     char line[MAX_LINE_SIZE];
     int line_i;
@@ -102,6 +115,14 @@ int is_whole_number(char tmp_line[]) {
     return TRUE;
 }
 
+
+
+/**  --update
+ * replace white spaces from the left of s to NULL
+ * not changing s 
+ * @param line the string that trimed 
+ * @param tmp_line temp string 
+ */
 char* delete_first_n_chars(char* line, int n) {
     /* not using delete_first_n_chars but fix it anyway... */
     /*        TODO: Memory leak! */
@@ -122,6 +143,14 @@ char* delete_first_n_chars(char* line, int n) {
     return tmp;
 }
 
+
+
+/**  --update
+ * replace white spaces from the left of s to NULL
+ * not changing s 
+ * @param line the string that trimed 
+ * @param tmp_line temp string 
+ */
 short check_valid_quotes(char line[]) {
     int i;
     int quotes_flag = 0;
@@ -133,6 +162,14 @@ short check_valid_quotes(char line[]) {
     return quotes_flag == 0 || quotes_flag == 2;
 }
 
+
+
+/**  --update
+ * replace white spaces from the left of s to NULL
+ * not changing s 
+ * @param line the string that trimed 
+ * @param tmp_line temp string 
+ */
 short check_no_dot(char line[]) {
     int i;
     for (i = 0; i < MAX_LINE_SIZE; i++) {
@@ -144,6 +181,13 @@ short check_no_dot(char line[]) {
 }
 
 
+
+/**  --update
+ * replace white spaces from the left of s to NULL
+ * not changing s 
+ * @param line the string that trimed 
+ * @param tmp_line temp string 
+ */
 char* clean_spaces(char* line) {
     int i;
     char* tmp_line;
