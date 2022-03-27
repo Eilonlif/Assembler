@@ -11,7 +11,7 @@ void object_output(char *file_name, int* table, int table_size) {
     char object_file_name[MAX_LINE_SIZE];
     strcpy(object_file_name, file_name);
 
-    object_file_name[strlen(object_file_name) - 4] = '\0';
+    object_file_name[strlen(object_file_name) - 3] = '\0';
     strcat(object_file_name, ".ob");
     FILE *fp = fopen(object_file_name, "w");
     char final_line[MAX_LINE_SIZE];
@@ -50,7 +50,7 @@ void entries_output (char *file_name, symbol *symbol_table, int symbol_table_siz
     char entry_file_name[MAX_LINE_SIZE];
     strcpy(entry_file_name, file_name);
 
-    entry_file_name[strlen(entry_file_name) - 4] = '\0';
+    entry_file_name[strlen(entry_file_name) - 3] = '\0';
     strcat(entry_file_name, ".ent");
 
     FILE *fp = fopen(entry_file_name, "w");

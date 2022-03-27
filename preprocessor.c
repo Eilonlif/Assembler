@@ -51,7 +51,7 @@ int start_preprocessor(char *file_name, char *processed_file_name) {
     macro macro_table[MAX_FILE_SIZE];
     int macro_table_index = 0;
     int index_in_macro_table;
-    FILE *fp = fopen(file_name, FILE_READ_MODE);
+    FILE *fp = fopen(file_name, "r");
     FILE *new_fp = fopen(processed_file_name, FILE_WRITE_MODE);
     /* reading line by line */
     while (fgets(line, MAX_LINE_SIZE, fp)) {
