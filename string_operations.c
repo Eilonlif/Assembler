@@ -1,21 +1,22 @@
 #include "string_operations.h"
 
+
 /**
- * trims white spaces from the left of s
- * be careful: will change s!
- * @param s
- * @return
+ * remove white spaces from the left of the current string s 
+ * @param s the string that trimed 
+ * @return the string s without white spaces from the left
  */
 char *ltrim(char *s) {
     while (isspace(*s)) s++;
     return s;
 }
 
+
+
 /**
- * trims white spaces from the right of s
- * be careful: will change s!
- * @param s
- * @return
+ * remove white spaces from the right of the current string s 
+ * @param s the string that trimed 
+ * @return the string s without white spaces from the right
  */
 char *rtrim(char *s) {
     char *back = s + strlen(s);
@@ -24,21 +25,24 @@ char *rtrim(char *s) {
     return s;
 }
 
+
+
 /**
- * trims white spaces from the right and from the left of s
- * be careful: will change s!
- * @param s
- * @return
+ * remove white spaces from the right and from the left of the current string s 
+ * @param s the string that trimed 
+ * @return the string s without white spaces from the right and from the left
  */
 char *trim(char *s) {
     return rtrim(ltrim(s));
 }
 
+
+
 /**
- * get a list with the first n words in line
- * @param line
- * @param n
- * @param field_array
+ * get a list with the first n words in a line
+ * @param line the line to get the words 
+ * @param n number of words from line 
+ * @param field_array list of the words 
  */
 void get_first_n_fields(char line[], int n, char** field_array) {
     int i;
@@ -68,11 +72,12 @@ void get_first_n_fields(char line[], int n, char** field_array) {
     }
 }
 
+
+
 /**
- * like ltrim but not changing line
- * filling empty spaces with null
- * @param line
- * @param tmp_line
+ * clear all the white spaces from the middle of a string 
+ * @param line the string that need to clear whote spaces  
+ * @param tmp_line temp string 
  */
 void clear_white_space(char line[], char tmp_line[]) {
     int tmp_line_index = 0;
@@ -85,6 +90,13 @@ void clear_white_space(char line[], char tmp_line[]) {
     tmp_line[tmp_line_index] = '\0';
 }
 
+
+
+/** 
+ * check if tmp_line is a number 
+ * @param tmp_line the string we want to check if is a number 
+ * @return TRUE if tmp_line is a number, FALSE else  
+ */
 int is_whole_number(char tmp_line[]) {
     char line[MAX_LINE_SIZE];
     int line_i;
@@ -102,6 +114,12 @@ int is_whole_number(char tmp_line[]) {
     return TRUE;
 }
 
+
+/**  
+ * check if the quotes is valid 
+ * @param line the string we want to check 
+ * @return TRUE if the quotes is valid, FALSE else 
+ */
 short check_valid_quotes(char line[]) {
     int i;
     int quotes_flag = 0;
@@ -113,6 +131,13 @@ short check_valid_quotes(char line[]) {
     return quotes_flag == 0 || quotes_flag == 2;
 }
 
+
+
+/** 
+ * check if there is a dot in a string 
+ * @param line the string we want to check 
+ * @return TRUE if there is a dot in string, FALSE else 
+ */
 short check_no_dot(char line[]) {
     int i;
     for (i = 0; i < MAX_LINE_SIZE; i++) {
@@ -124,6 +149,11 @@ short check_no_dot(char line[]) {
 }
 
 
+/**
+ * clear all the spaces from a string 
+ * @param line the string that need to clear whote spaces  
+ * @return the string without duplicate spaces
+ */
 char* clean_spaces(char* line) {
     int i;
     char* tmp_line;
