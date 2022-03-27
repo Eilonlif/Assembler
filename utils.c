@@ -1,15 +1,29 @@
 #include "utils.h"
 
+
+#include <stdlib.h>
+#include <limits.h>
+
+
+/**
+ * helper function for debugging 
+ * gets a string and print it to the screen 
+ * @debug_msg string to print 
+ */
 void debug(char *debug_msg) {
 #ifdef DEBUG
     printf("%s", debug_msg);
 #endif
 }
 
-#include <stdlib.h>
-#include <limits.h>
 
 
+/**
+ * helper function for debugging
+ * convert a int number in Decimal basis (10) to a Binary basis (2)
+ * @param i the int number to convert 
+ * @return str string that contains i in binary 
+ */
 /* for printing a binary number */
 char * int2bin(int i)
 {
