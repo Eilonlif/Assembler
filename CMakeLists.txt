@@ -13,7 +13,7 @@ set(CFLAGS -c ${MAIN_FLAGS})
 #add_executable(error.o error.c)
 
 
-add_executable (main main.c string_operations.c utils.c preprocessor.c assembler_passes.c assembler.c error.c)
+add_executable (main main.c string_operations.c utils.c preprocessor.c assembler_passes.c assembler.c error.c output.c)
 
 #
 #string_operations.o: string_operations.c

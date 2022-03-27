@@ -15,8 +15,6 @@
 #define FILE_READ_MODE "r"
 #define FILE_WRITE_MODE "w"
 
-
-/* TODO (Eilon): What the f*** is this??? */
 enum MACRO_SEARCH{MACRO_NOT_FOUND = -1};
 
 typedef struct macro {

@@ -20,12 +20,10 @@ void assembler_pass_1(char *file_name, int **table, int *table_index_prefixes[MA
 
     get_externs_and_entries_and_labels(file_name, &externs, &entries, &externs_size, &labels, &labels_size);
 
-
     char line[MAX_LINE_SIZE * 2];
     FILE *fp = fopen(file_name, "r");
     int symbol_def_flag;
     int line_identification;
-
 
     int n_fields = 3;
     char *fields[n_fields];
@@ -34,16 +32,11 @@ void assembler_pass_1(char *file_name, int **table, int *table_index_prefixes[MA
     int attributes[4];
     clear_values(attributes, 4);
 
-
     *symbol_table_size = 1;
 
-
     *symbol_table = (symbol*) malloc(sizeof(symbol));
-    /* TODO: SUS */
-//    clear_symbol_for_symbol_table(*symbol_table);
 
     symbol_def_flag = FALSE;
-
 
     IC = 100;
     DC = 0;
@@ -63,36 +56,30 @@ void assembler_pass_1(char *file_name, int **table, int *table_index_prefixes[MA
                     insert_to_symbol_table(symbol_table, symbol_table_size,
                                            fields[0], IC, IC - (IC % 16), (IC % 16),
                                            attributes, 1);
-
-                    /* TODO (Eilon): Still need to do step 7... */
                 }
                 L = calculate_binary_code(line, operand_names_table, *table, &table_index, *symbol_table, *symbol_table_size, externs, externs_size, labels, labels_size);
                 IC += L;
                 (*table_index_prefixes)[prefixes_index++] = IC;
-            } else if (line_identification == EXTERN_INSTRUCTION) {/* step 8 */
-                /* TODO (Eilon): indexing could be wrong... because idk what's with the label*/
-                /* TODO (Eilon): divide into 2 lines...*/
+            } else if (line_identification == EXTERN_INSTRUCTION) { /* step 8 */
                 attributes[0] = EXTERNAL_ATTRIBUTE;
                 if (fields[1][0] == INSTRUCTION_IDENTIFIER) {
                     insert_to_symbol_table(symbol_table, symbol_table_size,
                                            fields[2], 0, 0, 0,
                                            attributes, 1);
+
                 } else {
                     insert_to_symbol_table(symbol_table, symbol_table_size,
                                            fields[1], 0, 0, 0,
                                            attributes, 1);
                 }
-                /* here go back to step 2... */
             } else { /* step 11*/
                 if (symbol_def_flag) {
                     if (!check_in_operand_table(operand_names_table, fields[1])) { /* step 12*/
                         error_handler(UNDEFINED_OPERAND, line_number);
                     } else if (!check_valid_label(fields[0])) {
-                        /* TODO (Eilon): do you need to add check if in symbol table? */
                         error_handler(INVALID_LABEL, line_number);
                     } else {
                         attributes[0] = CODE_ATTRIBUTE;
-                        /* TODO changed 2 -> 0*/
                         fields[0][strlen(fields[0]) - 1] = '\0';
                         insert_to_symbol_table(symbol_table, symbol_table_size,
                                                fields[0], IC, IC - (IC % 16), (IC % 16),
@@ -100,8 +87,6 @@ void assembler_pass_1(char *file_name, int **table, int *table_index_prefixes[MA
                     }
                 }
                 /* step 13 - 16*/
-//                printf("line in assembler_pass_1: %s\n", line);
-                /* TODO: dont know if this if is correct*/
                 if (line_identification != ENTRY_INSTRUCTION) {
                     L = calculate_binary_code(line, operand_names_table, *table, &table_index, *symbol_table, *symbol_table_size, externs, externs_size, labels, labels_size);
                     IC += L;
@@ -131,9 +116,6 @@ void assembler_pass_2(char *file_name, int **table, int *table_index_prefixes[MA
     char *parm1;
     char *parm2;
 
-    parm1 = (char *) calloc(MAX_LINE_SIZE, sizeof(char));
-    parm2 = (char *) calloc(MAX_LINE_SIZE, sizeof(char));
-
     char *values;
     int values_size;
 
@@ -143,6 +125,11 @@ void assembler_pass_2(char *file_name, int **table, int *table_index_prefixes[MA
     int line_index;
     line_index = 0;
     int k;
+
+
+    parm1 = (char *) calloc(MAX_LINE_SIZE, sizeof(char));
+    parm2 = (char *) calloc(MAX_LINE_SIZE, sizeof(char));
+
     for (k = 0; k < 50; k++) {
         printf("%d:\t%d\n", k, (*table_index_prefixes)[k]);
     }
@@ -174,7 +161,6 @@ void assembler_pass_2(char *file_name, int **table, int *table_index_prefixes[MA
                 int op_code = -1;
                 int i;
                 for (i = 0; i < OPERAND_NAMES_TABLE_SIZE; i++) {
-//                    printf("'%s' ?==? '%s'\n", &values[MAX_LINE_SIZE], operand_names_table[i]);
                     if (strcmp(&(values[MAX_LINE_SIZE]), operand_names_table[i]) == 0) {
                         op_code = op_table[i][0];
                     }
@@ -182,11 +168,11 @@ void assembler_pass_2(char *file_name, int **table, int *table_index_prefixes[MA
 
                 if (op_code < 5) {
                     check_label_or_label_register(parm1, table, *symbol_table, *symbol_table_size, line_index - 1,
-                                                  table_index_prefixes);
+                                                  table_index_prefixes, file_name);
                 }
                 if (op_code < 14) {
                     check_label_or_label_register(op_code > 4 ?parm1 : parm2, table, *symbol_table, *symbol_table_size, line_index - 1,
-                                                  table_index_prefixes);
+                                                  table_index_prefixes, file_name);
                 }
             }
         }
@@ -205,5 +191,7 @@ void assembler(char *file_name) {
     printf("starting pass 2\n");
     assembler_pass_2(file_name, &table, &table_index_prefixes, &symbol_table, &symbol_table_size);
 
+    entries_output(file_name, symbol_table, symbol_table_size);
+    object_output(file_name, table, MAX_TABLE_SIZE);
 
 }

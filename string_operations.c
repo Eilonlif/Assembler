@@ -102,26 +102,6 @@ int is_whole_number(char tmp_line[]) {
     return TRUE;
 }
 
-char* delete_first_n_chars(char* line, int n) {
-    /* not using delete_first_n_chars but fix it anyway... */
-    /*        TODO: Memory leak! */
-    /*    strcpy(line, delete_first_n_chars(fields[0], 1)); */
-    int line_length = strlen(line);
-    int tmp_index = 0;
-    char* tmp = (char *) calloc(line_length, sizeof(char));
-    int i;
-
-    /* TODO (Eilon): check indexing... */
-    /* Edge case */
-    if (n > line_length) {
-        return "";
-    }
-    for (i = n; i < line_length; i ++) {
-        tmp[tmp_index++] = line[i];
-    }
-    return tmp;
-}
-
 short check_valid_quotes(char line[]) {
     int i;
     int quotes_flag = 0;
@@ -165,31 +145,3 @@ char* clean_spaces(char* line) {
     }
     return trim(tmp_line);
 }
-
-
-
-
-
-
-/* TODO (Eilon): add function for checking valid ',' */
-
-/* label: op a,b, c, d */
-/* TODO (Eilon & Liraz): do that @ friday / saturday */
-/*
-short check_valid_commas(char line[]) {
-    int i;
-    int comma_flag = FALSE;
-    int last_space_index = 0;
-    int values[10];  TODO (Eilon): IDK what's the size...
-    if ()
-    for (i = 0; i < MAX_LINE_SIZE; i++) {
-        if (isspace(line[i])) {
-            last_space_index = i;
-        }
-        if (line[i] == COMMA_IDENTIFIER) {
-            comma_flag = TRUE;
-
-        }
-    }
-}
-*/

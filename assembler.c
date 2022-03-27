@@ -24,8 +24,6 @@ int op_table[16][6] = {
         {15, 0,  -1, -1, -1, -1}};
 
 
-/* TODO (Eilon): add check for opcode not a saed operand! */
-
 int check_valid_label_name(char *line) {
     int i;
     char c;
@@ -42,7 +40,6 @@ int check_valid_label(char *label) {
     if (strlen(label) > MAX_LABEL_SIZE) {
         return FALSE;
     }
-    /*TODO: check the comma identifier...., I think it's good......... */
     return label[0] != COMMA_IDENTIFIER && check_valid_label_name(label) &&
            (label[strlen(label) - 1] == END_OF_LABEL_IDENTIFIER);
 }
@@ -51,9 +48,7 @@ char *has_label(char *line) {
     int n_fields = 1;
     char *fields[n_fields];
     get_first_n_fields(line, n_fields, fields);
-    /* TODO: free fields[0] */
     if (check_valid_label(fields[0])) {
-        /* TODO (Eilon & Liraz): check that... */
         fields[0][strlen(fields[0]) - 1] = '\0';
         return fields[0];
     }
@@ -68,12 +63,10 @@ void clear_values(int *arr, int size) {
 }
 
 int get_instruction_type(char *line) {
-//    printf("in get_instruction_type\n");
     int i;
     int f;
     /* TODO (Eilon): Magic const */
     for (i = 0; i < 4; i++) {
-//        printf("string 1, 2, comp: %s, %s, %d\n", line, instructions[i], strcmp(line, instructions[i]) == 0);
         if (strcmp(line, instructions[i]) == 0) {
             switch (i) {
                 case 0:
@@ -105,9 +98,6 @@ int identify_line(char *line) {
         return COMMENT;
     }
 
-    /* TODO (Eilon): logic kinda sus not gonna lie... */
-/*    strcpy(label, *has_label(line)) */
-/* TODO: check the *has_label........ */
     if (strlen(has_label(line)) != 0) {
         if (fields[1][0] == INSTRUCTION_IDENTIFIER) {
             /* its not different whether there is a label or not... */
@@ -122,40 +112,9 @@ int identify_line(char *line) {
 }
 
 
-void create_operand_table(int tmp_table[16][6]) {
-    int i;
-    int j;
-    int table[16][6] = {
-            {0,  -1, 0,  3,  1,  3},
-            {1,  -1, 0,  3,  0,  3},
-            {2,  10, 0,  3,  1,  3},
-            {2,  11, 0,  3,  1,  3},
-            {4,  -1, 1,  2,  1,  3},
-            {5,  10, -1, -1, 1,  3},
-            {5,  11, -1, -1, 1,  3},
-            {5,  12, -1, -1, 1,  3},
-            {5,  13, -1, -1, 1,  3},
-            {9,  10, -1, -1, 1,  2},
-            {9,  11, -1, -1, 1,  2},
-            {9,  12, -1, -1, 1,  2},
-            {12, -1, -1, -1, 1,  3},
-            {13, -1, -1, -1, 0,  3},
-            {14, -1, -1, -1, -1, -1},
-            {15, -1, -1, -1, -1, -1}};
-    for (i = 0; i < 16; i++) {
-        for (j = 0; j < 6; j++) {
-            tmp_table[i][j] = table[i][j];
-        }
-    }
-}
-
-
 int check_in_symbol_table(symbol *symbol_table, int symbol_table_size, char *symbol_name) {
-//    printf("in check_in_symbol_table\n");
     int i;
     for (i = 0; i < symbol_table_size; i++) {
-//        printf("name: '%s'\n", symbol_table[i].symbol_name);
-//        printf("leng: %d\n", strlen(symbol_table[i].symbol_name));
         if (strlen(symbol_name) > 0 && strncmp(symbol_table[i].symbol_name, symbol_name, strlen(symbol_name)) == 0) {
             return i;
         }
@@ -175,18 +134,12 @@ int check_in_operand_table(char **operand_names_table, char *operand) {
 
 }
 
-void clear_symbol_for_symbol_table(symbol *s) {
-    s->value = 0;
-    s->base_address = 0;
-    s->offset = 0;
-}
 
 /*
  * copying l2 to l1
  * */
 void cpy_int_lists_for_symbol(int *l1, int *l2) {
     int i;
-    /* TODO: remove magic number for max num of attributes in a symbol or something*/
     for (i = 0; i < 4; i++) {
         l1[i] = l2[i];
     }
@@ -208,14 +161,11 @@ int insert_to_symbol_table(symbol **symbol_table, int *symbol_table_size, char s
     cpy_int_lists_for_symbol(s.attributes, attributes);
 
     (*symbol_table)[(*symbol_table_size) - 1] = s;
-//    printf("symbol_table_size: %d\n", *symbol_table_size);
     *symbol_table = (symbol *) realloc(*symbol_table, (++(*symbol_table_size)) * sizeof(symbol));
-//    clear_symbol_for_symbol_table(symbol_table[*symbol_table_size - 1]);
     return NO_ERROR;
 }
 
-/* TODO: remember to use this function in the right spots, we didnt do that in the meeting*/
-/* TODO: REMEMBER, value has to be trimmed */
+
 /**
  *
  * @param value
@@ -233,23 +183,17 @@ int check_for_spaces(char *value) {
 }
 
 
-/* TODO: REMEMBER, line has to be trimmed */
 int check_hashtag(char *line) {
-    /* beware */
     if (line[0] == HASHTAG_IDENTIFIER) {
-        /* TODO: check that, fishy... maybe sizeof(char) */
-
         return is_whole_number(line + 1);
     }
     return FALSE;
 }
 
 
-/* TODO: REMEMBER, line has to be trimmed */
 int check_register(char *line) {
     int num;
     if (line[0] == REGISTER_IDENTIFIER) {
-        /* TODO: what about -12*/
         if (is_whole_number(line + 1)) {
             num = atoi(line + 1);
         } else {
@@ -263,7 +207,6 @@ int check_register(char *line) {
 }
 
 
-/* TODO: REMEMBER, line has to be trimmed */
 int check_register_brackets(char *line) {
     if (line[0] == REGISTER_OPEN_IDENTIFIER && line[strlen(line) - 1] == REGISTER_CLOSE_IDENTIFIER) {
         line[strlen(line) - 1] = '\0';
@@ -272,8 +215,6 @@ int check_register_brackets(char *line) {
     return -1;
 }
 
-
-/* TODO: REMEMBER, line has to be trimmed */
 int check_label_with_register(char *line) {
     char *token;
     char tmp_line[MAX_LINE_SIZE];
@@ -297,10 +238,6 @@ int check_label_with_register(char *line) {
 int split_by_comma(char *line, char **values, int label_flag, int *values_size) {
     int i;
     char *result;
-
-    /* beware */
-    char *tmp;
-    /* TODO: YOU DUMBASS, first split by space after Liraz's function, and then split by ','*/
     strcpy(line, clean_spaces(line));
 
     result = (char *) calloc(20 * MAX_LINE_SIZE, sizeof(char));
@@ -318,33 +255,13 @@ int split_by_comma(char *line, char **values, int label_flag, int *values_size) 
         token_space = strtok(NULL, s_space);
     }
     strncpy(&result[1 * MAX_LINE_SIZE], token_space, MAX_LINE_SIZE);
-//    int j;
-//    for (j = 0; j < OPERAND_NAMES_TABLE_SIZE; j++) {
-//
-//    }
-
-    /* this is for leaving an empty slot if there's no label */
-    /* TODO: check that */
     i = 2;
     token_comma = strtok(NULL, s_comma);
 
-//    tmp = calloc((i + 1) * MAX_LINE_SIZE, sizeof(char));
-//    tmp = calloc((20) * MAX_LINE_SIZE, sizeof(char));
-//    memcpy(tmp, result, (i + 1) * MAX_LINE_SIZE);
-//    result = calloc((i + 1) * MAX_LINE_SIZE, sizeof(char));
     while (token_comma != NULL) {
         if (strlen(trim(token_comma)) == 0) {
-            /* error, ',' after value then nothing */
         } else {
             strncpy(&(result[i * MAX_LINE_SIZE]), trim(token_comma), MAX_LINE_SIZE);
-//            memcpy(result, tmp, (i + 1) * MAX_LINE_SIZE);
-//            printf("tmp[%d]: %s\n",i, &tmp[i*MAX_LINE_SIZE]);
-//            printf("token: %s\n",token_comma);
-//
-//            tmp = calloc((i + 1) * MAX_LINE_SIZE, sizeof(char));
-//            memcpy(tmp, result, (i + 1) * MAX_LINE_SIZE);
-//            result = calloc((i + 1) * MAX_LINE_SIZE, sizeof(char));
-
             i += 1;
             token_comma = strtok(NULL, s_comma);
         }
@@ -636,30 +553,27 @@ get_externs_and_entries_and_labels(char *file_name, char **externs, char **entri
     fclose(fp);
 }
 
-//
-//void object_output_extern (char *file_name, symbol *symbol_table, int symbol_table_size, char *symbol_name, int line_index) {
-//    int i;
-//    int j;
-//
-//    char str[80];
-//
-//    FILE *fp = fopen(file_name, "w");
-//
-///*strcpy(ext_file, file_name);
-//strcat(ext_file, .ent);*/
-//    for (i = 0; i < symbol_table_size; i++){
-//        for (j = 0; j < symbol_table->attributes_size; j++){
-//            if (symbol_table->attributes[i] == EXTERNAL_ATTRIBUTE){
-//                sprintf(str, "%s %d %d\n",symbol_table->symbol_name, line_index, line_index + 1);
-//                fputs(str, fp);
-//            }
-//        }
-//    }
-//}
+
+void output_extern (char *file_name, char *symbol_name, int current_IC) {
+    char str[MAX_LINE_SIZE];
+    char extern_file_name[MAX_LINE_SIZE];
+
+    strcpy(extern_file_name, file_name);
+
+    extern_file_name[strlen(extern_file_name) - 4] = '\0';
+    strcat(extern_file_name, ".ext");
+
+    FILE *fp = fopen(extern_file_name, "a+");
+    sprintf(str, "%s BASE %d\n%s OFFSET %d\n", symbol_name, current_IC, symbol_name, current_IC + 1);
+    fputs(str, fp);
+    fclose(fp);
+
+
+}
 
 
 void check_label_or_label_register(char *parm, int **table, symbol *symbol_table, int symbol_table_size, int line_index,
-                                   int *table_index_prefixes[MAX_TABLE_SIZE]) {
+                                   int *table_index_prefixes[MAX_TABLE_SIZE], char *file_name) {
     int symbol_index;
     int index;
     symbol_index = check_in_symbol_table(symbol_table, symbol_table_size, parm);
@@ -674,9 +588,6 @@ void check_label_or_label_register(char *parm, int **table, symbol *symbol_table
             token = strtok(tmp_line, s);
             symbol_index = check_in_symbol_table(symbol_table, symbol_table_size, token);
         }
-        /* maybe line_index-1??? idk bruh lols*/
-        /* TODO: check if thats okay like u do return and change rows, susssssssss*/
-        /* TODO HERE FUNCTION FOR WRITING THE EXTERNAL FILE*/
 
         index = (((*table_index_prefixes)[line_index]) - 100) + 2;
         (*table)[index] += symbol_table[symbol_index].base_address;
@@ -684,7 +595,11 @@ void check_label_or_label_register(char *parm, int **table, symbol *symbol_table
         (*table)[index + 1] += symbol_table[symbol_index].offset;
         (*table)[index + 1] = insert_value_by_index((*table)[index + 1], R_INDEX, 1);
 
+        if (symbol_table[symbol_index].attributes[0] == EXTERNAL_ATTRIBUTE) {
+            output_extern(file_name, parm, 100 + index);
+        }
         printf("%s\n", parm);
+        printf("%d\n", index);
         int2bin((*table)[index]);
         int2bin((*table)[index + 1]);
     }

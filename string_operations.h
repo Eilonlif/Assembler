@@ -27,8 +27,6 @@ void clear_white_space(char line[], char tmp_line[]);
 
 int is_whole_number(char tmp_line[]);
 
-char* delete_first_n_chars(char* line, int n);
-
 short check_no_dot(char line[]);
 
 char* clean_spaces(char* line);
