@@ -39,10 +39,3 @@ int main(int argc, char* argv[]) {
 
     return 0;
 }
-
-
-//int main() {
-//    assembler("../ptf.as");
-//
-//    return 0;
-//}
