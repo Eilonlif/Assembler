@@ -3,8 +3,16 @@
 #include <errno.h>
 #include <stdio.h>
 
+
+/**
+ * 4 options of instructions
+ */
 char *instructions[] = {".data", ".string", ".entry", ".extern"};
 
+
+/**
+ * table that include line for each set function
+ */
 int op_table[16][6] = {
         {0,  0,  0,  3,  1,  3},
         {1,  0,  0,  3,  0,  3},
@@ -24,6 +32,14 @@ int op_table[16][6] = {
         {15, 0,  -1, -1, -1, -1}};
 
 
+
+/* TODO (Eilon): add check for opcode not a saed operand! */
+/**
+ * check that the label is valid - that he is'nt name of a saved function or register
+ * @param line the label name that we want to check
+ * @return TRUE if the label name is valid, FALSE else
+ */
+
 int check_valid_label_name(char *line) {
     int i;
     char c;
@@ -36,6 +52,13 @@ int check_valid_label_name(char *line) {
     return TRUE;
 }
 
+
+
+/**
+ * check that the length of a label is valid and that there is a colon (:) in the end
+ * @param label the label name we want to check
+ * @return TRUE if the label name is valid, FALSE else
+ */
 int check_valid_label(char *label) {
     if (strlen(label) > MAX_LABEL_SIZE) {
         return FALSE;
@@ -44,6 +67,13 @@ int check_valid_label(char *label) {
            (label[strlen(label) - 1] == END_OF_LABEL_IDENTIFIER);
 }
 
+
+
+/**
+ * divide a line into fields and check the label
+ * @param line the line we want to check
+ * @return ???
+ */
 char *has_label(char *line) {
     int n_fields = 1;
     char *fields[n_fields];
@@ -55,6 +85,13 @@ char *has_label(char *line) {
     return "\0";
 }
 
+
+
+/**
+ * clear the values from a array
+ * @param arr the array we want to clean the values
+ * @param size the size of the array
+ */
 void clear_values(int *arr, int size) {
     int i;
     for (i = 0; i < size; i++) {
@@ -62,6 +99,13 @@ void clear_values(int *arr, int size) {
     }
 }
 
+
+
+/**
+ * get the instruction type
+ * @param line the line we want to get the instruction type
+ * @return the instruction type of the line
+ */
 int get_instruction_type(char *line) {
     int i;
     int f;
@@ -83,6 +127,13 @@ int get_instruction_type(char *line) {
     return UNDEFINED_INSTRUCTION;
 }
 
+
+
+/**
+ * divide a line to type (empty / comment / command)
+ * @param line the line we want the type
+ * @return the type of the line
+ */
 int identify_line(char *line) {
     char *tmp;
     int n_fields = 2;
@@ -112,6 +163,14 @@ int identify_line(char *line) {
 }
 
 
+/**
+ * check if a name is in the symbol table
+ * @param symbol_table the table of all the symbol
+ * @param symbol_table_size the size of the symbol table
+ * @param symbol_name the name that we want to check
+ * @return i - the number of the line in the symbol table that contain the symbol name, -1 else
+ */
+
 int check_in_symbol_table(symbol *symbol_table, int symbol_table_size, char *symbol_name) {
     int i;
     for (i = 0; i < symbol_table_size; i++) {
@@ -123,6 +182,12 @@ int check_in_symbol_table(symbol *symbol_table, int symbol_table_size, char *sym
 }
 
 
+/**
+ * check if a name is in the operand table
+ * @param operand_names_table the table of all the operands
+ * @param operand the name we want to check
+ * @return TRUE if a name is in the operand table, FALSE else
+ */
 int check_in_operand_table(char **operand_names_table, char *operand) {
     int i;
     for (i = 0; i < OPERAND_NAMES_TABLE_SIZE; i++) {
@@ -135,9 +200,13 @@ int check_in_operand_table(char **operand_names_table, char *operand) {
 }
 
 
-/*
- * copying l2 to l1
- * */
+
+/**
+ * copying l1 to l2
+ * @param l1 the string we want to copy
+ * @param l2 the string we want to save into
+ */
+
 void cpy_int_lists_for_symbol(int *l1, int *l2) {
     int i;
     for (i = 0; i < 4; i++) {
@@ -145,6 +214,20 @@ void cpy_int_lists_for_symbol(int *l1, int *l2) {
     }
 }
 
+
+
+/**
+ * insert to the symbol table
+ * @param symbol_table the table of all the symbol
+ * @param symbol_table_size the size of the symbol table
+ * @param symbol_name the name of the symbol
+ * @param value the split values
+ * @param base_address the base adress of the symbol
+ * @param offset the offset of the symbol
+ * @param attributes the attributes of the symbol
+ * @param attribute_size the attributes size of the symbol
+ * @return if there is an error
+ */
 int insert_to_symbol_table(symbol **symbol_table, int *symbol_table_size, char symbol_name[MAX_LINE_SIZE], int value,
                            int base_address, int offset, int attributes[4], int attribute_size) {
     if (check_in_symbol_table(*symbol_table, *symbol_table_size, symbol_name) != -1) {
@@ -167,9 +250,9 @@ int insert_to_symbol_table(symbol **symbol_table, int *symbol_table_size, char s
 
 
 /**
- *
- * @param value
- * @return true if no spaces, false otherwise
+ * check if there is spaces in a string
+ * @param value the string we want to check
+ * @return TRUE if no spaces, FALSE else
  */
 int check_for_spaces(char *value) {
     /* beware */
@@ -183,6 +266,14 @@ int check_for_spaces(char *value) {
 }
 
 
+
+/**
+ * check if the start with a hashtag
+ * @param line the line we want to check
+ * @return TRUE if the line start with hashtag and then contain a number, FALSE else
+ */
+/* TODO: REMEMBER, line has to be trimmed */
+
 int check_hashtag(char *line) {
     if (line[0] == HASHTAG_IDENTIFIER) {
         return is_whole_number(line + 1);
@@ -191,6 +282,12 @@ int check_hashtag(char *line) {
 }
 
 
+/**
+ * check if the line is a register
+ * @param line the line we want to check
+ * @return TRUE if the line start with hashtag and then contain a number between 0 - 15, FALSE else
+ */
+/* TODO: REMEMBER, line has to be trimmed */
 int check_register(char *line) {
     int num;
     if (line[0] == REGISTER_IDENTIFIER) {
@@ -207,6 +304,13 @@ int check_register(char *line) {
 }
 
 
+/**
+ * check if the line is a register with brackets
+ * @param line the line we want to check
+ * @return TRUE if the line start with hashtag and then contain a number between 0 - 15 and brackets,
+ * FALSE else
+ */
+/* TODO: REMEMBER, line has to be trimmed */
 int check_register_brackets(char *line) {
     if (line[0] == REGISTER_OPEN_IDENTIFIER && line[strlen(line) - 1] == REGISTER_CLOSE_IDENTIFIER) {
         line[strlen(line) - 1] = '\0';
@@ -215,6 +319,12 @@ int check_register_brackets(char *line) {
     return -1;
 }
 
+/**
+ * check if the line contain a label and register
+ * @param line the line we want to check
+ * @return TRUE if the line contain label and register, FALSE else
+ */
+/* TODO: REMEMBER, line has to be trimmed */
 int check_label_with_register(char *line) {
     char *token;
     char tmp_line[MAX_LINE_SIZE];
@@ -234,6 +344,14 @@ int check_label_with_register(char *line) {
 }
 
 
+/**
+ * split line using comma
+ * @param line the line we want to split
+ * @param values the split values
+ * @param label_flag 1 if there is a label
+ * @param values_size the size of values
+ * @return error type if there is errors, else NO_ERROR
+ */
 /* TODO: REMEMBER, line has to be trimmed */
 int split_by_comma(char *line, char **values, int label_flag, int *values_size) {
     int i;
@@ -275,6 +393,14 @@ int split_by_comma(char *line, char **values, int label_flag, int *values_size) 
 }
 
 
+
+/**
+ * get the values from line
+ * @param line the line we want to split
+ * @param values the split values
+ * @param values_size the size of values
+ * @return error type if there is errors, else NO_ERROR
+ */
 /* I changed this function */
 /* TODO: REMEMBER!! *line has to start after the opcode, otherwise all of the functions would NOT work*/
 int get_values(char *line, char **values, int *values_size) {
@@ -289,6 +415,13 @@ int get_values(char *line, char **values, int *values_size) {
 }
 
 
+/**
+ * insert the value by the index
+ * @param row the row of the table
+ * @param num_index the number of the index
+ * @param num the number to insert
+ * @return the row that we insert the value
+ */
 int insert_value_by_index(int row, int num_index, int num) {
     /* row += 2^index * num */
     row += pow(2, num_index) * num;
@@ -296,6 +429,21 @@ int insert_value_by_index(int row, int num_index, int num) {
 }
 
 
+
+/**
+ * calculate the register and the addressing mode according to the opcode
+ * separator for cases according to each addressing mode
+ * thus pass the values to the function
+ * @param values
+ * @param field_index the index of the field
+ * @param reg_addrss_mode
+ * @param symbol_table the table of all the symbol
+ * @param symbol_table_size the size of the symbol table
+ * @param externs the table of all the externs
+ * @param externs_size the size of the externs table
+ * @param labels the table of all the labels
+ * @param labels_size the size of the labels table
+ */
 void calculate_register_and_addressing_mode(char *values, int field_index, int **reg_addrss_mode, symbol *symbol_table,
                                             int symbol_table_size, char *externs, int externs_size, char *labels,
                                             int labels_size) {
@@ -351,6 +499,16 @@ void calculate_register_and_addressing_mode(char *values, int field_index, int *
     (*reg_addrss_mode)[1] = addressing_mode;
 }
 
+
+
+
+/**
+ * insert the rows to the table
+ * @param rows the row of the table
+ * @param rows_index the index og the row table
+ * @param table
+ * @param table_index
+ */
 void insert_rows_to_table(int *rows, int rows_index, int *table, int *table_index) {
     int i;
     for (i = 0; i < rows_index; i++) {
@@ -362,6 +520,21 @@ void insert_rows_to_table(int *rows, int rows_index, int *table, int *table_inde
     (*table_index) += rows_index;
 }
 
+
+/**
+ *
+ * @param line
+ * @param operand_names_table
+ * @param table
+ * @param table_index
+ * @param symbol_table
+ * @param symbol_table_size
+ * @param externs
+ * @param externs_size
+ * @param labels
+ * @param labels_size
+ * @return
+ */
 /* TODO: Still need to work out the case for .data and .string */
 int calculate_binary_code(char *line, char **operand_names_table, int *table, int *table_index, symbol *symbol_table,
                           int symbol_table_size, char *externs, int externs_size, char *labels, int labels_size) {
@@ -482,6 +655,15 @@ int calculate_binary_code(char *line, char **operand_names_table, int *table, in
 }
 
 
+/**
+ *
+ * @param file_name
+ * @param externs
+ * @param entries
+ * @param externs_size
+ * @param labels
+ * @param labels_size
+ */
 /* TODO: externs size might be wrong last time i checked... */
 void
 get_externs_and_entries_and_labels(char *file_name, char **externs, char **entries, int *externs_size, char **labels,
@@ -571,7 +753,15 @@ void output_extern (char *file_name, char *symbol_name, int current_IC) {
 
 }
 
-
+/**
+ *
+ * @param parm
+ * @param table
+ * @param symbol_table
+ * @param symbol_table_size
+ * @param line_index
+ * @param table_index_prefixes
+ */
 void check_label_or_label_register(char *parm, int **table, symbol *symbol_table, int symbol_table_size, int line_index,
                                    int *table_index_prefixes[MAX_TABLE_SIZE], char *file_name) {
     int symbol_index;
@@ -604,5 +794,3 @@ void check_label_or_label_register(char *parm, int **table, symbol *symbol_table
         int2bin((*table)[index + 1]);
     }
 }
-
-
