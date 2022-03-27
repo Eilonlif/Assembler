@@ -6,7 +6,7 @@
 char *instructions[] = {".data", ".string", ".entry", ".extern"};
 
 
-/* Liraz */ 
+/* change */ 
 int op_table[16][6] = {
         {0,  -1, 0,  3,  1,  3},
         {1,  -1, 0,  3,  0,  3},
